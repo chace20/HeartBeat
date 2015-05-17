@@ -1,4 +1,4 @@
-# HeartBeat
+﻿# HeartBeat
 
 ##目录说明
 
@@ -16,3 +16,5 @@ build-tools >= 22.0.1
 SDK API >= 22(Android 5.1.1)
 
 ADT >=  23.0.6
+
+hehe
