@@ -14,9 +14,9 @@ public class ToolUtil {
 	public static final int TIME_COMMON = 0x1242;
 
 	/**
-	 * ¸ù¾İmode»ñÈ¡µ±Ç°Ê±¼ä,
-	 * TIME_STAMP »ñÈ¡Ê±¼ä´Á,
-	 * TIME_COMMON »ñÈ¡ÆÕÍ¨Ê±¼ä
+	 * æ ¹æ®modeè·å–å½“å‰æ—¶é—´,
+	 * TIME_STAMP è·å–æ—¶é—´æˆ³,
+	 * TIME_COMMON è·å–æ™®é€šæ—¶é—´
 	 * 
 	 * @param mode
 	 * @return time
@@ -29,7 +29,7 @@ public class ToolUtil {
 	}
 
 	/**
-	 * Í¨¹ıÊ±¼ä´Á»ñÈ¡Õı³£Ê±¼ä
+	 * é€šè¿‡æ—¶é—´æˆ³è·å–æ­£å¸¸æ—¶é—´
 	 * 
 	 * @param stamp
 	 * @return time
@@ -42,7 +42,7 @@ public class ToolUtil {
 	}
 
 	/**
-	 * Æô¶¯Activity
+	 * å¯åŠ¨Activity
 	 * 
 	 * @param context
 	 * @param cls
@@ -53,7 +53,7 @@ public class ToolUtil {
 	}
 
 	/**
-	 * Æô¶¯activity
+	 * å¯åŠ¨activity
 	 * 
 	 * @param context
 	 * @param intent
@@ -63,7 +63,7 @@ public class ToolUtil {
 	}
 
 	/**
-	 * ¸´ÖÆÄÚÈİµ½¼ôÌù°å
+	 * å¤åˆ¶å†…å®¹åˆ°å‰ªè´´æ¿
 	 * 
 	 * @param context
 	 * @param content
@@ -78,7 +78,7 @@ public class ToolUtil {
 	}
 
 	/**
-	 * ·ÖÏíÄÚÈİ¸øºÃÓÑ
+	 * åˆ†äº«å†…å®¹ç»™å¥½å‹
 	 * 
 	 * @param context
 	 * @param title
@@ -94,7 +94,7 @@ public class ToolUtil {
 	}
 
 	/**
-	 * È¥ÆÀ·Ö
+	 * å»è¯„åˆ†
 	 * 
 	 * @param context
 	 */
@@ -105,7 +105,7 @@ public class ToolUtil {
 		try {
 			context.startActivity(marketIntent);
 		} catch (Exception e) {
-			Toast.makeText(context, "Î´ÕÒµ½Ó¦ÓÃÊĞ³¡", Toast.LENGTH_SHORT).show();
+			Toast.makeText(context, "æœªæ‰¾åˆ°åº”ç”¨å¸‚åœº", Toast.LENGTH_SHORT).show();
 		}
 	}
 }

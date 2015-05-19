@@ -2,7 +2,6 @@ package com.uestc.hb.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.view.MenuItem;
 
 public abstract class BaseActivity extends ActionBarActivity{
 	@Override
@@ -14,21 +13,21 @@ public abstract class BaseActivity extends ActionBarActivity{
 		initValue();
 	}
 	/**
-	 * 初始化布局，主要是findView和inflate
+	 * 鍒濆鍖栧竷灞�锛屼富瑕佹槸findView鍜宨nflate
 	 */
 	abstract protected void initLayout();
 	/**
-	 * 初始化监听器，比如setOnClickListener
+	 * 鍒濆鍖栫洃鍚櫒锛屾瘮濡俿etOnClickListener
 	 */
 	abstract protected void initListener();
 	/**
-	 * 初始化值，比如setAdapter，setText
+	 * 鍒濆鍖栧�硷紝姣斿setAdapter锛宻etText
 	 */
 	abstract protected void initValue();
 
 	
 	/**
-	 * 设置根视图layout
+	 * 璁剧疆鏍硅鍥緇ayout
 	 * @return layoutResID
 	 */
 	abstract protected int setRootView();

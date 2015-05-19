@@ -1,11 +1,6 @@
 package com.uestc.hb.ui;
 
 import com.uestc.hb.R;
-import com.uestc.hb.R.id;
-import com.uestc.hb.R.layout;
-import com.uestc.hb.R.menu;
-
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,19 +33,19 @@ public class PairActivity extends BaseActivity {
 
 	@Override
 	protected void initLayout() {
-		// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
+		// TODO è‡ªåŠ¨ç”Ÿæˆçš„æ–¹æ³•å­˜æ ¹
 		
 	}
 
 	@Override
 	protected void initListener() {
-		// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
+		// TODO è‡ªåŠ¨ç”Ÿæˆçš„æ–¹æ³•å­˜æ ¹
 		
 	}
 
 	@Override
 	protected void initValue() {
-		// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
+		// TODO è‡ªåŠ¨ç”Ÿæˆçš„æ–¹æ³•å­˜æ ¹
 		
 	}
 
