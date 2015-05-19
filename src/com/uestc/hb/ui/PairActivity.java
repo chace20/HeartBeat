@@ -1,16 +1,20 @@
-package com.uestc.hb;
+package com.uestc.hb.ui;
+
+import com.uestc.hb.R;
+import com.uestc.hb.R.id;
+import com.uestc.hb.R.layout;
+import com.uestc.hb.R.menu;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class PairActivity extends ActionBarActivity {
+public class PairActivity extends BaseActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.layout_pair);
 	}
 
 	@Override
@@ -30,5 +34,28 @@ public class PairActivity extends ActionBarActivity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	protected void initLayout() {
+		// TODO 自动生成的方法存根
+		
+	}
+
+	@Override
+	protected void initListener() {
+		// TODO 自动生成的方法存根
+		
+	}
+
+	@Override
+	protected void initValue() {
+		// TODO 自动生成的方法存根
+		
+	}
+
+	@Override
+	protected int setRootView() {
+		return R.layout.layout_pair;
 	}
 }
