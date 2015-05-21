@@ -28,5 +28,7 @@
             android:name="com.uestc.hb.ui.WebActivity">
         </activity>
     </application>
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
 
 </manifest>
