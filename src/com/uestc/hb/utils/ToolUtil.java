@@ -3,8 +3,11 @@ package com.uestc.hb.utils;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.uestc.hb.R;
+
 import android.net.Uri;
 import android.text.ClipboardManager;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
@@ -50,6 +53,8 @@ public class ToolUtil {
 	public static void startActivity(Context context, Class<?> cls) {
 		Intent i = new Intent(context, cls);
 		context.startActivity(i);
+		((Activity) context).overridePendingTransition(R.anim.push_up_in,
+				R.anim.push_up_out);
 	}
 
 	/**
@@ -60,6 +65,8 @@ public class ToolUtil {
 	 */
 	public static void startActivity(Context context, Intent intent) {
 		context.startActivity(intent);
+		((Activity) context).overridePendingTransition(R.anim.push_up_in,
+				R.anim.push_up_out);
 	}
 
 	/**
