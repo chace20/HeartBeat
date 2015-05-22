@@ -9,5 +9,6 @@
     <string name="nopair_text">还没有连接设备哦</string>
     <string name="nopair_name1">重新连接</string>
     <string name="nopair_name2">无法连接？查看帮助</string>
+    <string name="surfaceview_name">断开连接</string>
 
 </resources>
