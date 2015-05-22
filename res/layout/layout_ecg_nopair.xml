@@ -24,7 +24,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/nopair_text"
                 android:layout_marginTop="64dp"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:textColor="@color/text_black_87" />
 
             <ImageView
                 android:id="@+id/imageView1"
@@ -38,14 +39,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:text="@string/nopair_name1" />
+                android:textColor="@color/text_white_87"
+                android:text="@string/nopair_name1"
+                android:background="@drawable/selector_button_primary" />
 
             <Button
                 android:id="@+id/button2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/nopair_name2" />
+                android:textColor="@color/text_black_87"
+                android:text="@string/nopair_name2"
+                android:background="@drawable/selector_button_second" />
         </LinearLayout>
     </ScrollView>
 

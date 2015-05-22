@@ -10,5 +10,7 @@
     <string name="nopair_name1">重新连接</string>
     <string name="nopair_name2">无法连接？查看帮助</string>
     <string name="surfaceview_name">断开连接</string>
+    <string name="surfaceview_text1">0</string>
+    <string name="surfaceview_text2">每分钟心跳次数</string>
 
 </resources>
