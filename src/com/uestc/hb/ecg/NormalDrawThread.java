@@ -22,6 +22,8 @@ public class NormalDrawThread extends Thread {
 
 	private int xPoint;
 	private int yCenter;
+	
+	private float yOld;
 
 	private Timer timer;
 	private TimerTask task;
@@ -41,6 +43,8 @@ public class NormalDrawThread extends Thread {
 
 		xPoint = X_OFFSET;
 		yCenter = HEIGHT / 3 * 2;
+		
+		yOld = yCenter;
 
 		timer = new Timer();
 		task = null;
@@ -72,7 +76,7 @@ public class NormalDrawThread extends Thread {
 
 					Canvas canvas = holder.lockCanvas(new Rect(xPoint,
 							(int) yPoint - 2, xPoint + 2, (int) yPoint + 2));
-					canvas.drawPoint(xPoint, yPoint, pen);
+					canvas.drawLine(xPoint - 1, yOld, xPoint, yPoint, pen);
 					holder.unlockCanvasAndPost(canvas);
 
 					xPoint++;
@@ -84,7 +88,7 @@ public class NormalDrawThread extends Thread {
 			}
 		};
 
-		timer.schedule(task, 0, 1);
+		timer.schedule(task, 0, 2);
 
 	}
 

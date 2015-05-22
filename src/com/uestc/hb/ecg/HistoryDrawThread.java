@@ -19,6 +19,8 @@ public class HistoryDrawThread extends Thread {
 
 	private int xPoint;
 	private int yCenter;
+	
+	private float yOld;
 
 	private Paint pen;
 
@@ -35,6 +37,8 @@ public class HistoryDrawThread extends Thread {
 
 		xPoint = X_OFFSET;
 		yCenter = HEIGHT / 3 * 2;
+		
+		yOld = yCenter;
 
 		this.holder = holder;
 
@@ -51,7 +55,7 @@ public class HistoryDrawThread extends Thread {
 	@Override
 	public void run() {
 
-		// TODO 修改锁定范围，可能需要修改绘画算法，改成画线
+		// TODO 修改锁定范围，可能需要修改绘画算法
 		float yPoint;
 
 		Canvas canvas = holder.lockCanvas(new Rect(0, 0, WIDTH, HEIGHT));
@@ -59,7 +63,8 @@ public class HistoryDrawThread extends Thread {
 			try {
 				yPoint = (Float) data.get(count++);
 				yPoint = yCenter - yPoint * 50;
-				canvas.drawPoint(xPoint, yPoint, pen);
+				canvas.drawLine(xPoint - 1, yOld, xPoint, yPoint, pen);
+				yOld = yPoint;
 
 				xPoint++;
 				if (xPoint >= WIDTH) {
