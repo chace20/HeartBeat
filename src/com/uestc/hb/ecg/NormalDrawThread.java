@@ -9,6 +9,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.SurfaceHolder;
 
 public class NormalDrawThread extends Thread {
@@ -22,29 +24,31 @@ public class NormalDrawThread extends Thread {
 
 	private int xPoint;
 	private int yCenter;
-	
+	private float yPoint;
+
 	private float yOld;
 
 	private Timer timer;
 	private TimerTask task;
-
+	
 	private Paint pen;
 
 	private FileRead fileRead;
 	private ArrayList<Number> data;
 	private int count;
 
-	public NormalDrawThread(SurfaceHolder holder, Context context) {
+	public NormalDrawThread(SurfaceHolder holder, Context context, int width,
+			int height) {
 
-		//TODO  修改分辨率
-		WIDTH = 480;
-		HEIGHT = 270;
+		WIDTH = width;
+		HEIGHT = height;
 		X_OFFSET = 5;
 
 		xPoint = X_OFFSET;
 		yCenter = HEIGHT / 3 * 2;
-		
+
 		yOld = yCenter;
+		yPoint = yCenter;
 
 		timer = new Timer();
 		task = null;
@@ -52,11 +56,12 @@ public class NormalDrawThread extends Thread {
 		this.holder = holder;
 		run = true;
 
-		holder.setFixedSize(WIDTH + 48, HEIGHT + 27);
+		holder.setFixedSize((int) (WIDTH * 1.1), (int) (HEIGHT * 1.1));
 
 		pen = new Paint();
-		pen.setColor(Color.GREEN);
+		pen.setColor(Color.parseColor("#e91e63"));
 		pen.setStrokeWidth(2);
+		pen.setAntiAlias(true);
 		fileRead = new FileRead(context);
 		data = fileRead.readData();
 		count = 0;
@@ -64,25 +69,32 @@ public class NormalDrawThread extends Thread {
 
 	@Override
 	public void run() {
-
-		//TODO 改成画线
+		drawBack(holder);
+		
 		task = new TimerTask() {
 
 			@Override
 			public void run() {
 				if (run) {
-					float yPoint = (Float) data.get(count++);
-					yPoint = yCenter - yPoint * 50;
 
-					Canvas canvas = holder.lockCanvas(new Rect(xPoint,
-							(int) yPoint - 2, xPoint + 2, (int) yPoint + 2));
-					canvas.drawLine(xPoint - 1, yOld, xPoint, yPoint, pen);
-					holder.unlockCanvasAndPost(canvas);
+					try {
+						yPoint = (Float) data.get(count++);
+						yPoint = yCenter - yPoint * 50;
+					} catch (Exception e) {
 
-					xPoint++;
-					if (xPoint >= WIDTH) {
-						xPoint = X_OFFSET;
-						drawBack(holder);
+					} finally {
+						Canvas canvas = holder
+								.lockCanvas(new Rect(xPoint, (int) yPoint - 2,
+										xPoint + 2, (int) yPoint + 2));
+						canvas.drawLine(xPoint - 1, yOld, xPoint, yPoint, pen);
+						holder.unlockCanvasAndPost(canvas);
+
+						yOld = yPoint;
+						xPoint++;
+						if (xPoint >= WIDTH) {
+							xPoint = X_OFFSET;
+							drawBack(holder);
+						}
 					}
 				}
 			}
@@ -95,7 +107,7 @@ public class NormalDrawThread extends Thread {
 	private void drawBack(SurfaceHolder holder) {
 
 		Canvas canvas = holder.lockCanvas();
-		canvas.drawColor(Color.BLACK);
+		canvas.drawColor(Color.parseColor("#00f0f0f0"));
 		holder.unlockCanvasAndPost(canvas);
 
 		// holder.lockCanvas(new Rect(0, 0, 0, 0));
@@ -110,4 +122,3 @@ public class NormalDrawThread extends Thread {
 		this.run = run;
 	}
 }
-

@@ -19,6 +19,7 @@ public class FileRead {
 
 	public ArrayList<Number> readData() {
 
+		//TODO 修改读入数据算法
 		try {
 
 			InputStream in = context.getResources().getAssets().open(fileName);

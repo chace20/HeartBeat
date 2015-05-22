@@ -13,11 +13,17 @@ public class HistoryECGSurView extends SurfaceView implements Callback {
 	private SurfaceHolder holder;
 	private HistoryDrawThread historyDrawThread;
 	
+	private int width;
+	private int height;
+	
 	public HistoryECGSurView(Context context,AttributeSet attrs) {
 		super(context,attrs);
 		this.context = context;
 		holder = this.getHolder();
 		holder.addCallback(this);
+		
+		width = this.getWidth();
+		height = this.getHeight();
 	}
 
 	/* (non-Javadoc)
@@ -32,7 +38,7 @@ public class HistoryECGSurView extends SurfaceView implements Callback {
 	 */
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
-		historyDrawThread = new HistoryDrawThread(holder, context);
+		historyDrawThread = new HistoryDrawThread(holder, context, width, height);
 		historyDrawThread.start();
 	}
 

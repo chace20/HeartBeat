@@ -28,11 +28,10 @@ public class HistoryDrawThread extends Thread {
 	private ArrayList<Number> data;
 	private int count;
 
-	public HistoryDrawThread(SurfaceHolder holder, Context context) {
+	public HistoryDrawThread(SurfaceHolder holder, Context context, int width, int height) {
 
-		// TODO 修改分辨率
-		WIDTH = 480;
-		HEIGHT = 270;
+		WIDTH = width;
+		HEIGHT = height;
 		X_OFFSET = 5;
 
 		xPoint = X_OFFSET;
@@ -42,11 +41,12 @@ public class HistoryDrawThread extends Thread {
 
 		this.holder = holder;
 
-		holder.setFixedSize(WIDTH + 48, HEIGHT + 27);
+		holder.setFixedSize((int)(WIDTH * 1.1), (int)(HEIGHT * 1.1));
 
 		pen = new Paint();
-		pen.setColor(Color.GREEN);
+		pen.setColor(Color.parseColor("#e91e63"));
 		pen.setStrokeWidth(2);
+		pen.setAntiAlias(true);
 		fileRead = new FileRead(context);
 		data = fileRead.readData();
 		count = 0;
@@ -55,10 +55,11 @@ public class HistoryDrawThread extends Thread {
 	@Override
 	public void run() {
 
-		// TODO 修改锁定范围，可能需要修改绘画算法
 		float yPoint;
 
+		
 		Canvas canvas = holder.lockCanvas(new Rect(0, 0, WIDTH, HEIGHT));
+		canvas.drawColor(Color.parseColor("#00f0f0f0"));
 		while (true) {
 			try {
 				yPoint = (Float) data.get(count++);
