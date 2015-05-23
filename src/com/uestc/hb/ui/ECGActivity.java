@@ -6,9 +6,10 @@ import com.uestc.hb.ecg.NormalECGSurfaceView;
 
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 
-public class ECGActivity extends BaseActivity {
+public class ECGActivity extends BaseActivity implements OnClickListener{
 	private View normalView;
 	private View noPairView;
 
@@ -33,8 +34,10 @@ public class ECGActivity extends BaseActivity {
 
 	@Override
 	protected void initListener() {
-		// TODO Auto-generated method stub
 
+		nopairButton1.setOnClickListener(this);
+		nopairButton2.setOnClickListener(this);
+		normalButton.setOnClickListener(this);
 	}
 
 	@Override
@@ -46,6 +49,12 @@ public class ECGActivity extends BaseActivity {
 	@Override
 	protected int setRootView() {
 		return R.layout.layout_ecg_nopair;
+	}
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
