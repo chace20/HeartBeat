@@ -2,7 +2,51 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
-    
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingLeft="32dp"
+    android:paddingRight="32dp" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="48dp" >
+        <TextView 
+            android:id="@+id/textview1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2.6"
+            android:textSize="45sp"
+            android:gravity="bottom|right"
+            android:textColor="@color/text_black_87"
+            android:text="@string/normal_text_number"
+            />
+        <TextView 
+            android:id="@+id/textview2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="20sp"
+            android:textColor="@color/text_black_87"
+            android:text="@string/normal_text_unit"
+            />
+    </LinearLayout>
+
+    <com.uestc.hb.ecg.NormalECGSurfaceView
+        android:id="@+id/surfaceview1"
+        android:layout_width="match_parent"
+        android:layout_height="256dp"
+        android:layout_marginTop="8dp"
+        android:background="#00f0f0f0" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:textColor="@color/text_black_87"
+        android:text="@string/normal_button_disconnect"
+        android:background="@drawable/selector_button_second" />
 
 </LinearLayout>
