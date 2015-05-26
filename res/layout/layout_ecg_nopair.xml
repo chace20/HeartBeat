@@ -22,7 +22,7 @@
                 android:id="@+id/textView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/nopair_text"
+                android:text="@string/nopair_text_tip"
                 android:layout_marginTop="64dp"
                 android:textSize="24sp"
                 android:textColor="@color/text_black_87" />
@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:textColor="@color/text_white_87"
-                android:text="@string/nopair_name1"
+                android:text="@string/nopair_button_retry"
                 android:background="@drawable/selector_button_primary" />
 
             <Button
@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:textColor="@color/text_black_87"
-                android:text="@string/nopair_name2"
+                android:text="@string/nopair_button_help"
                 android:background="@drawable/selector_button_second" />
         </LinearLayout>
     </ScrollView>

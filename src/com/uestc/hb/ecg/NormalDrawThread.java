@@ -3,6 +3,9 @@ package com.uestc.hb.ecg;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -30,12 +33,11 @@ public class NormalDrawThread extends Thread {
 
 	private Timer timer;
 	private TimerTask task;
-	
+
 	private Paint pen;
 
-	private FileRead fileRead;
 	private ArrayList<Number> data;
-	private int count;
+	private Lock lock;
 
 	public NormalDrawThread(SurfaceHolder holder, Context context, int width,
 			int height) {
@@ -54,7 +56,7 @@ public class NormalDrawThread extends Thread {
 		task = null;
 
 		this.holder = holder;
-		run = true;
+		run = false;
 
 		holder.setFixedSize((int) (WIDTH * 1.1), (int) (HEIGHT * 1.1));
 
@@ -62,15 +64,13 @@ public class NormalDrawThread extends Thread {
 		pen.setColor(Color.parseColor("#e91e63"));
 		pen.setStrokeWidth(2);
 		pen.setAntiAlias(true);
-		fileRead = new FileRead(context);
-		data = fileRead.readData();
-		count = 0;
+
 	}
 
 	@Override
 	public void run() {
 		drawBack(holder);
-		
+
 		task = new TimerTask() {
 
 			@Override
@@ -78,7 +78,7 @@ public class NormalDrawThread extends Thread {
 				if (run) {
 
 					try {
-						yPoint = (Float) data.get(count++);
+						yPoint = useData();
 						yPoint = yCenter - yPoint * 50;
 					} catch (Exception e) {
 
@@ -86,9 +86,13 @@ public class NormalDrawThread extends Thread {
 						Canvas canvas = holder
 								.lockCanvas(new Rect(xPoint, (int) yPoint - 2,
 										xPoint + 2, (int) yPoint + 2));
-						canvas.drawLine(xPoint - 1, yOld, xPoint, yPoint, pen);
-						holder.unlockCanvasAndPost(canvas);
+						try {
+							canvas.drawLine(xPoint - 1, yOld, xPoint, yPoint,
+									pen);
+							holder.unlockCanvasAndPost(canvas);
+						} catch (Exception e) {
 
+						}
 						yOld = yPoint;
 						xPoint++;
 						if (xPoint >= WIDTH) {
@@ -106,9 +110,13 @@ public class NormalDrawThread extends Thread {
 
 	private void drawBack(SurfaceHolder holder) {
 
-		Canvas canvas = holder.lockCanvas();
-		canvas.drawColor(Color.parseColor("#00f0f0f0"));
-		holder.unlockCanvasAndPost(canvas);
+		try {
+			Canvas canvas = holder.lockCanvas();
+			canvas.drawColor(Color.parseColor("#00f0f0f0"));
+			holder.unlockCanvasAndPost(canvas);
+		} catch (Exception e) {
+
+		}
 
 		// holder.lockCanvas(new Rect(0, 0, 0, 0));
 		// holder.unlockCanvasAndPost(canvas);
@@ -120,5 +128,38 @@ public class NormalDrawThread extends Thread {
 
 	public void setRun(boolean run) {
 		this.run = run;
+	}
+
+	public void addData(float msg) {
+
+		lock.lock();
+		try {
+			
+			data.add(msg);
+			
+		} catch (Exception e) {
+			
+		} finally {
+			
+			lock.unlock();
+		}
+	}
+	
+	@SuppressWarnings("finally")
+	public float useData(){
+		
+		float temp = -1;
+		lock.lock();
+		try{
+			
+			temp = (Float)data.get(0);
+			data.remove(0);
+		}catch(Exception e){
+			
+		}finally{
+			
+			lock.unlock();
+			return temp;
+		}
 	}
 }

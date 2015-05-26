@@ -22,9 +22,10 @@ public class NormalECGSurfaceView extends SurfaceView implements Callback {
 		this.context = context;
 		holder = this.getHolder();
 		holder.addCallback(this);
-		
 		width = this.getWidth();
 		height = this.getHeight();
+		normalDrawThread = new NormalDrawThread(holder, context, width, height);
+		normalDrawThread.start();
 	}
 
 	/* (non-Javadoc)
@@ -39,9 +40,8 @@ public class NormalECGSurfaceView extends SurfaceView implements Callback {
 	 */
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
-		normalDrawThread = new NormalDrawThread(holder, context, width, height);
+		
 		normalDrawThread.setRun(true);
-		normalDrawThread.start();
 	}
 
 	/* (non-Javadoc)
@@ -49,8 +49,17 @@ public class NormalECGSurfaceView extends SurfaceView implements Callback {
 	 */
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
-		normalDrawThread.setRun(false);
-		normalDrawThread = null;
+
+	}
+	
+	public void setThreadState(boolean run){
+		
+		normalDrawThread.setRun(run);
+	}
+	
+	public void passData(float msg){
+		
+		normalDrawThread.addData(msg);
 	}
 
 }
