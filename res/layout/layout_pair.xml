@@ -7,10 +7,45 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.uestc.hb.ui.PairActivity" >
+    
+    <ListView
+        android:id="@+id/pairList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
-    <TextView
+    <ProgressBar
+        android:id="@+id/pairProgress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" 
+        style="@style/CustomProgressStyle"/>
 
+    <TextView
+        android:id="@+id/pairText1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="64dp"
+        android:text="正在配对"
+        android:textSize="24sp"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/pairText2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="74dp"
+        android:text="请带好手环并靠近手机"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/pairText3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="72dp"
+        android:text="先不连接了" 
+        android:textSize="14sp"/>
 </RelativeLayout>
