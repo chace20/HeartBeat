@@ -44,6 +44,17 @@ public class ToolUtil {
 		return d;
 	}
 
+
+	public static int getInt(byte[] bytes) {
+		return (0xff & bytes[0]) | (0xff00 & (bytes[1] << 8))
+				| (0xff0000 & (bytes[2] << 16))
+				| (0xff000000 & (bytes[3] << 24));
+	}
+
+	public static float getFloat(byte[] bytes) {
+		return Float.intBitsToFloat(getInt(bytes));
+	}
+	
 	/**
 	 * 启动Activity
 	 * 
@@ -69,50 +80,4 @@ public class ToolUtil {
 				R.anim.push_up_out);
 	}
 
-	/**
-	 * 复制内容到剪贴板
-	 * 
-	 * @param context
-	 * @param content
-	 * @param alertmsg
-	 */
-	public static void copyToClipboard(Context context, String content,
-			String alertmsg) {
-		ClipboardManager clip = (ClipboardManager) context
-				.getSystemService(context.CLIPBOARD_SERVICE);
-		clip.setText(content);
-		Toast.makeText(context, alertmsg, Toast.LENGTH_SHORT).show();
-	}
-
-	/**
-	 * 分享内容给好友
-	 * 
-	 * @param context
-	 * @param title
-	 * @param content
-	 */
-	public static void shareWithOther(Context context, String title,
-			String content) {
-		Intent intent = new Intent(Intent.ACTION_SEND);
-		intent.setType("text/plain");
-		intent.putExtra(Intent.EXTRA_SUBJECT, title);
-		intent.putExtra(Intent.EXTRA_TEXT, content);
-		context.startActivity(Intent.createChooser(intent, title));
-	}
-
-	/**
-	 * 去评分
-	 * 
-	 * @param context
-	 */
-	public static void markMarketScore(Context context) {
-		String mAddress = "market://details?id=" + context.getPackageName();
-		Intent marketIntent = new Intent("android.intent.action.VIEW");
-		marketIntent.setData(Uri.parse(mAddress));
-		try {
-			context.startActivity(marketIntent);
-		} catch (Exception e) {
-			Toast.makeText(context, "未找到应用市场", Toast.LENGTH_SHORT).show();
-		}
-	}
 }

@@ -282,19 +282,16 @@ public abstract class PairActivity extends BaseActivity implements OnItemClickLi
 
 	@Override
 	protected void initLayout() {
-		// TODO �Զ����ɵķ������
 		
 	}
 
 	@Override
 	protected void initListener() {
-		// TODO �Զ����ɵķ������
 		
 	}
 
 	@Override
 	protected void initValue() {
-		// TODO �Զ����ɵķ������
 		
 	}
 
