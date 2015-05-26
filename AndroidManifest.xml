@@ -24,11 +24,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity 
-            android:name="com.uestc.hb.ui.WebActivity">
+        <activity android:name="com.uestc.hb.ui.WebActivity" >
         </activity>
+
+        <service android:name="com.hb.services.BTService" >
+        </service>
     </application>
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
 </manifest>
