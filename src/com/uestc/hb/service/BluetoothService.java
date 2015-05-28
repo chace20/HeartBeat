@@ -1,14 +1,13 @@
-package com.hb.services;
+package com.uestc.hb.service;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Set;
-
 import com.uestc.hb.R;
-import com.uestc.hb.ui.BluetoothConst;
+import com.uestc.hb.common.BluetoothConst;
 import com.uestc.hb.ui.PairActivity;
-import com.uestc.hb.ui.Util;
+import com.uestc.hb.utils.NotifyUtil;
+import com.uestc.hb.utils.ToolUtil;
 
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
@@ -23,8 +22,8 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
-public class BTService extends Service {
-	private static final String TAG = BTService.class.getName();
+public class BluetoothService extends Service {
+	private static final String TAG = BluetoothService.class.getName();
 	private static final String SERVICE = "BTService";
 
 	private BluetoothAdapter mBluetoothAdapter;
@@ -57,10 +56,11 @@ public class BTService extends Service {
 				int state = intent
 						.getIntExtra(BluetoothAdapter.EXTRA_STATE,-1);
 				if (BluetoothAdapter.STATE_TURNING_OFF == state) {
-					Intent i = new Intent(BTService.this, PairActivity.class);
+					Intent i = new Intent(BluetoothService.this, PairActivity.class);
 					i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-					Util.toNotiFy(BTService.this, R.drawable.ic_hb,
+					NotifyUtil.toNotify(BluetoothService.this, R.drawable.ic_girl,
 							"蓝牙被改变", 1, i, "蓝牙被关闭，HeartBeat无法正常工作");
+					stop();
 				}
 				break;
 			case BluetoothAdapter.ACTION_DISCOVERY_FINISHED:
@@ -105,16 +105,13 @@ public class BTService extends Service {
 	private synchronized void manageConnectedSocket(BluetoothSocket mmSocket) {
 		trace("设备已连接");
 		mConnectedThread = new ConnectedThread(mmSocket);
-		// start在onBind中调用
+		mConnectedThread.start();
 		sendBroadcast(BluetoothConst.ACTION_PAIR_CONNECTED);
 	}
 
 	private class ConnectThread extends Thread {
 		private final BluetoothSocket mmSocket;
-		private final BluetoothDevice mmDevice;
-
 		public ConnectThread(BluetoothDevice device) {
-			this.mmDevice = device;
 			BluetoothSocket tmp = null;
 			try {
 				tmp = device
@@ -158,37 +155,30 @@ public class BTService extends Service {
 	private class ConnectedThread extends Thread {
 		private final BluetoothSocket mmSocket;
 		private final InputStream mmInStream;
-		private final OutputStream mmOutStream;
-
 		public ConnectedThread(BluetoothSocket socket) {
 			mmSocket = socket;
 			InputStream tmpIn = null;
-			OutputStream tmpOut = null;
-
 			// Get the input and output streams, using temp objects because
 			// member streams are final
 			try {
 				tmpIn = socket.getInputStream();
-				tmpOut = socket.getOutputStream();
 			} catch (IOException e) {
 			}
 
 			mmInStream = tmpIn;
-			mmOutStream = tmpOut;
 		}
 
 		public void run() {
+			trace("ConnectedThread run");
 			byte[] buffer = new byte[1024]; // buffer store for the stream
-			int bytes; // bytes returned from read()
-
 			// Keep listening to the InputStream until an exception occurs
 			while (true) {
 				try {
-					// Read from the InputStream
-					bytes = mmInStream.read(buffer);
-					float data = BluetoothConst.getFloat(buffer);
+					mmInStream.read(buffer);
+					float data = ToolUtil.getFloat(buffer);
 					sendDataMessage(data);
 				} catch (IOException e) {
+					sendStateMessage(BluetoothConst.MESSAGE_CONNECTED_ERROR);
 					break;
 				}
 			}
@@ -249,7 +239,7 @@ public class BTService extends Service {
 	@Override
 	public IBinder onBind(Intent intent) {
 		trace("onBind");
-		mConnectedThread.start();
+		sendStateMessage(BluetoothConst.MESSAGE_BIND_SUCCESS);
 		return mBinder;
 	}
 
@@ -295,13 +285,13 @@ public class BTService extends Service {
 	}
 
 	public class LocalBinder extends Binder {
-		public BTService getService() {
-			return BTService.this;
+		public BluetoothService getService() {
+			return BluetoothService.this;
 		}
 
 		public void setHandler(Handler handler) {
 			trace("setHandler");
-			BTService.mHandler = handler;
+			BluetoothService.mHandler = handler;
 		}
 	}
 
@@ -310,3 +300,4 @@ public class BTService extends Service {
 		Log.i(TAG, msg);
 	}
 }
+

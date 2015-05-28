@@ -5,14 +5,12 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     
-    <string name="scanning">scanning for devices...</string>
-    <string name="select_device">select a device to connect</string>
-    <string name="none_paired">No devices have been paired</string>
-    <string name="none_found">No devices found</string>
-    <string name="title_paired_devices">Paired Devices</string>
-    <string name="title_other_devices">Other Available Devices</string>
-    <string name="button_scan">Scan for devices</string>
-    
     <string name="web_error">加载网页失败，请检查网络连接</string>
+    <string name="nopair_text_tip">还没有连接设备哦</string>
+    <string name="nopair_button_retry">重新连接</string>
+    <string name="nopair_button_help">无法连接？查看帮助</string>
+    <string name="normal_button_disconnect">断开连接</string>
+    <string name="normal_text_number">0</string>
+    <string name="normal_text_unit">每分钟心跳次数</string>
 
 </resources>

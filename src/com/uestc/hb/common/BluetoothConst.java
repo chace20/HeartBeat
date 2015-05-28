@@ -1,12 +1,13 @@
-package com.uestc.hb.ui;
+package com.uestc.hb.common;
 
 import java.util.UUID;
 
 public class BluetoothConst {
+
 	//测试用，写死了的mac地址
 	public static final String MAC_ADDRESS="80:CF:41:D7:19:84";
 	
-	public static final String MY_SDP = "BluetoothSend";
+	public static final String MY_SDP = "heartbeat_bluetooth";
 	public static final UUID MY_UUID = UUID
 			.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66");
 	
@@ -35,14 +36,4 @@ public class BluetoothConst {
 	//重新连接
 	public static final String INTENT_RETRY_PAIR="com.uestc.hb.ACTION_RETRY_PAIR";
 
-
-	public static int getInt(byte[] bytes) {
-		return (0xff & bytes[0]) | (0xff00 & (bytes[1] << 8))
-				| (0xff0000 & (bytes[2] << 16))
-				| (0xff000000 & (bytes[3] << 24));
-	}
-
-	public static float getFloat(byte[] bytes) {
-		return Float.intBitsToFloat(getInt(bytes));
-	}
 }

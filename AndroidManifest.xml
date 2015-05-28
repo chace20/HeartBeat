@@ -17,6 +17,7 @@
         android:theme="@style/ActionBarTheme" >
         <activity
             android:name="com.uestc.hb.ui.PairActivity"
+            android:theme="@style/NoActionBarTheme"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,14 +25,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.uestc.hb.ui.WebActivity" >
+        <activity 
+            android:name="com.uestc.hb.ui.WebActivity">
         </activity>
-
-        <service android:name="com.hb.services.BTService" >
-        </service>
     </application>
-
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
 
 </manifest>
