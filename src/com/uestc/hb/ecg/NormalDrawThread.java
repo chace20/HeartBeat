@@ -11,9 +11,11 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.SurfaceHolder;
 
 public class NormalDrawThread extends Thread {
@@ -36,9 +38,8 @@ public class NormalDrawThread extends Thread {
 
 	private Paint pen;
 
-	private ArrayList<Number> data;
-	private Lock lock;
-
+	private ArrayList<Float> data = new ArrayList<Float>();
+	
 	public NormalDrawThread(SurfaceHolder holder, Context context, int width,
 			int height) {
 
@@ -47,7 +48,7 @@ public class NormalDrawThread extends Thread {
 		X_OFFSET = 5;
 
 		xPoint = X_OFFSET;
-		yCenter = HEIGHT / 3 * 2;
+		yCenter = HEIGHT / 2;
 
 		yOld = yCenter;
 		yPoint = yCenter;
@@ -61,45 +62,54 @@ public class NormalDrawThread extends Thread {
 		holder.setFixedSize((int) (WIDTH * 1.1), (int) (HEIGHT * 1.1));
 
 		pen = new Paint();
-		pen.setColor(Color.parseColor("#e91e63"));
-		pen.setStrokeWidth(2);
+//		pen.setColor(Color.parseColor("#e91e63"));
+		pen.setColor(Color.BLUE);
+		pen.setStrokeWidth(4);
 		pen.setAntiAlias(true);
 
+		data.add((float) 0.0);
+		
+		drawBack(holder);
 	}
 
 	@Override
 	public void run() {
-		drawBack(holder);
+//		drawBack(holder);
+		Log.i("ecg", "center" + yCenter);
 
 		task = new TimerTask() {
 
 			@Override
 			public void run() {
 				if (run) {
-
 					try {
 						yPoint = useData();
-						yPoint = yCenter - yPoint * 50;
+//						yPoint = yCenter - yPoint * 10;
+						yPoint = yPoint*500 - 400;
+//						Log.i("ecg", "y" + yPoint);
 					} catch (Exception e) {
-
+						Log.i("ecg", "" + e);
 					} finally {
 						Canvas canvas = holder
-								.lockCanvas(new Rect(xPoint, (int) yPoint - 2,
-										xPoint + 2, (int) yPoint + 2));
+								.lockCanvas(new Rect(xPoint - 11, 0,
+										xPoint + 2, HEIGHT));
 						try {
-							canvas.drawLine(xPoint - 1, yOld, xPoint, yPoint,
+							canvas.drawLine(xPoint - 10, yOld, xPoint, yPoint,
 									pen);
 							holder.unlockCanvasAndPost(canvas);
 						} catch (Exception e) {
-
+							Log.i("ecg", "" + e);
 						}
 						yOld = yPoint;
-						xPoint++;
+						xPoint+=5;
 						if (xPoint >= WIDTH) {
 							xPoint = X_OFFSET;
 							drawBack(holder);
 						}
 					}
+				}else{
+					drawBack(holder);
+
 				}
 			}
 		};
@@ -112,7 +122,7 @@ public class NormalDrawThread extends Thread {
 
 		try {
 			Canvas canvas = holder.lockCanvas();
-			canvas.drawColor(Color.parseColor("#00f0f0f0"));
+			canvas.drawColor(Color.parseColor("#eeeeee"));
 			holder.unlockCanvasAndPost(canvas);
 		} catch (Exception e) {
 
@@ -132,34 +142,32 @@ public class NormalDrawThread extends Thread {
 
 	public void addData(float msg) {
 
-		lock.lock();
+		// lock.lock();
 		try {
-			
+
 			data.add(msg);
-			
 		} catch (Exception e) {
-			
+
 		} finally {
-			
-			lock.unlock();
+
+			// lock.unlock();
 		}
+
 	}
-	
-	@SuppressWarnings("finally")
-	public float useData(){
-		
+
+	public float useData() {
+
 		float temp = -1;
-		lock.lock();
-		try{
-			
-			temp = (Float)data.get(0);
+		// lock.lock();
+		try {
+
+			temp = (Float) data.get(0);
 			data.remove(0);
-		}catch(Exception e){
-			
-		}finally{
-			
-			lock.unlock();
-			return temp;
+		} catch (Exception e) {
 		}
+
+		// lock.unlock();
+		return temp;
+
 	}
 }
