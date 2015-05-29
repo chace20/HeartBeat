@@ -8,10 +8,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.uestc.hb.ui.PairActivity" >
     
-    <ListView
-        android:id="@+id/pairList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
     <ProgressBar
         android:id="@+id/pairProgress"
@@ -21,6 +17,16 @@
         android:layout_centerVertical="true" 
         style="@style/CustomProgressStyle"/>
 
+    <Button
+        android:id="@+id/connectButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView1"
+        android:layout_below="@+id/textView1"
+        android:layout_marginTop="26dp"
+        android:text="开始连接" />
+    
+    
     <TextView
         android:id="@+id/pairText1"
         android:layout_width="wrap_content"
