@@ -64,14 +64,14 @@ public class PairActivity extends Activity {
 	};
 	
 	private void initView() {
-		connectButton = (Button) findViewById(R.id.connectButton);
-		connectButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				openBT();
-			}
-		});
+//		connectButton = (Button) findViewById(R.id.connectButton);
+//		connectButton.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//				openBT();
+//			}
+//		});
 	}
 
 	private void openBT() {
@@ -118,6 +118,8 @@ public class PairActivity extends Activity {
 		setContentView(R.layout.layout_pair);
 		initView();
 		registReceiver();
+		openBT();
+		
 	}
 	@Override
 	protected void onDestroy() {
