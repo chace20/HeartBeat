@@ -28,6 +28,12 @@
         <activity 
             android:name="com.uestc.hb.ui.WebActivity">
         </activity>
+        <activity 
+            android:name="com.uestc.hb.ui.ECGActivity">
+        </activity>
+        <service
+            android:name="com.uestc.hb.service.BluetoothService">
+        </service>
     </application>
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
