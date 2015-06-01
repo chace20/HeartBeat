@@ -64,14 +64,27 @@ public class PairActivity extends Activity {
 	};
 	
 	private void initView() {
-//		connectButton = (Button) findViewById(R.id.connectButton);
-//		connectButton.setOnClickListener(new OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				openBT();
-//			}
-//		});
+		connectButton = (Button) findViewById(R.id.connectButton);
+		connectButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				openBT();
+			}
+		});
+		
+		TextView pairText3 = (TextView) findViewById(R.id.pairText3);
+		pairText3.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+		pairText3.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(PairActivity.this,ECGActivity.class);
+				startActivity(i);
+				
+			}
+		});
+		
 	}
 
 	private void openBT() {
@@ -118,7 +131,7 @@ public class PairActivity extends Activity {
 		setContentView(R.layout.layout_pair);
 		initView();
 		registReceiver();
-		openBT();
+//		openBT();
 		
 	}
 	@Override
