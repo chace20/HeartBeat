@@ -17,6 +17,8 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -158,7 +160,30 @@ public class ECGActivity extends BaseActivity {
 			unbindService(serConn);
 		}
 	}
-
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.ecg, menu);
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		int id=item.getItemId();
+		switch (id) {
+		case R.id.menu_alarmlog:
+			ToolUtil.startActivity(this, AlarmLogActivity.class);
+			break;
+		case R.id.menu_about:
+			ToolUtil.startActivity(this, AboutActivity.class);
+			break;
+		case R.id.menu_help:
+			ToolUtil.startActivity(this, WebActivity.creatIntent(this, "http://baidu.com", "帮助"));
+		default:
+			break;
+		}
+		return true;
+	}
 	@Override
 	protected void initValue() {
 
