@@ -17,42 +17,41 @@
         android:layout_centerVertical="true" 
         style="@style/CustomProgressStyle"/>
 
-    <TextView
-        android:id="@+id/pairText3"
+    <Button
+        android:id="@+id/connectButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/pairProgress"
-        android:layout_marginBottom="72dp"
-        android:text="先不连接了"
-        android:textSize="14sp" />
-
+        android:layout_alignLeft="@+id/textView1"
+        android:layout_below="@+id/textView1"
+        android:layout_marginTop="26dp"
+        android:text="开始连接" />
+    
+    
     <TextView
         android:id="@+id/pairText1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="64dp"
         android:text="正在配对"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
         android:id="@+id/pairText2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="114dp"
+        android:layout_marginTop="74dp"
         android:text="请带好手环并靠近手机"
         android:textSize="16sp" />
 
-    <Button
-        android:id="@+id/connectButton"
+    <TextView
+        android:id="@+id/pairText3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:text="开始连接" />
-
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="72dp"
+        android:text="先不连接了" 
+        android:textSize="14sp"/>
 </RelativeLayout>
