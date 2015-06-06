@@ -3,12 +3,13 @@ package com.uestc.hb.service;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Set;
-import com.uestc.hb.R;
+
 import com.uestc.hb.common.BluetoothConst;
 import com.uestc.hb.ui.PairActivity;
 import com.uestc.hb.utils.NotifyUtil;
 import com.uestc.hb.utils.ToolUtil;
 
+import android.R;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
