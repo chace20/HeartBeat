@@ -25,7 +25,7 @@ public class HistoryDrawThread extends Thread {
 	private Paint pen;
 
 	private FileRead fileRead;
-	private ArrayList<Number> data;
+	private ArrayList<Float> data;
 	private int count;
 
 	public HistoryDrawThread(SurfaceHolder holder, Context context, int width, int height) {
@@ -48,7 +48,7 @@ public class HistoryDrawThread extends Thread {
 		pen.setStrokeWidth(2);
 		pen.setAntiAlias(true);
 		fileRead = new FileRead(context);
-		data = fileRead.readData();
+		data.add((float) 0.0);
 		count = 0;
 	}
 
@@ -75,6 +75,11 @@ public class HistoryDrawThread extends Thread {
 				return;
 			}
 		}
+	}
+	
+	public void setData(ArrayList<Float> data){
+		
+		this.data = data;
 	}
 }
 		

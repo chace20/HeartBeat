@@ -1,7 +1,8 @@
 package com.uestc.hb.ecg;
 
-import android.view.SurfaceView;
+import java.util.ArrayList;
 
+import android.view.SurfaceView;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
@@ -48,6 +49,11 @@ public class HistoryECGSurView extends SurfaceView implements Callback {
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
 		historyDrawThread = null;
+	}
+	
+	public void passData(ArrayList<Float> data){
+		
+		historyDrawThread.setData(data);
 	}
 
 }
