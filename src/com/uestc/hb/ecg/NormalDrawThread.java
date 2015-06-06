@@ -46,7 +46,7 @@ public class NormalDrawThread extends Thread {
 
 		WIDTH = 480;
 		HEIGHT = 270;
-		X_OFFSET = 5;
+		X_OFFSET = 1;
 
 		xPoint = X_OFFSET;
 		yCenter = HEIGHT / 4 * 3;
@@ -82,20 +82,18 @@ public class NormalDrawThread extends Thread {
 						yPoint = useData();
 						yPoint = yCenter - yPoint * 100 + 100;
 					} catch (Exception e) {
-						Log.i("ecg", "" + e);
 					} finally {
 
 						try {
 							Canvas canvas = holder.lockCanvas(new Rect(xPoint,
 									0, xPoint + 7, HEIGHT));
-							canvas.drawLine(xPoint, yOld, xPoint + 5, yPoint,
+							canvas.drawLine(xPoint, yOld, xPoint + 1, yPoint,
 									pen);
 							holder.unlockCanvasAndPost(canvas);
 						} catch (Exception e) {
-							Log.i("ecg", "" + e);
 						}
 						yOld = yPoint;
-						xPoint += 5;
+						xPoint += 1;
 						if (xPoint >= WIDTH) {
 							xPoint = X_OFFSET;
 							drawBack(holder);

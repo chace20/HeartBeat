@@ -9,6 +9,8 @@
         android:targetSdkVersion="22" />
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
     
     <application
         android:allowBackup="true"
@@ -26,16 +28,28 @@
             </intent-filter>
         </activity>
         <activity 
-            android:name="com.uestc.hb.ui.WebActivity">
+            android:name="com.uestc.hb.ui.WebActivity"
+            android:label="@string/title_web">
         </activity>
         <activity 
-            android:name="com.uestc.hb.ui.ECGActivity">
+            android:name="com.uestc.hb.ui.ECGActivity"
+            android:label="@string/title_ecg">
+        </activity>
+        <activity 
+            android:name="com.uestc.hb.ui.AboutActivity"
+            android:label="@string/title_about">
+        </activity>
+        <activity 
+            android:name="com.uestc.hb.ui.AlarmLogActivity"
+            android:label="@string/title_alarmlog">
+        </activity>
+        <activity 
+            android:name="com.uestc.hb.ui.AlarmDetailActivity"
+            android:label="@string/title_alarmdetail">
         </activity>
         <service
             android:name="com.uestc.hb.service.BluetoothService">
         </service>
     </application>
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
 
 </manifest>
