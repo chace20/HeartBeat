@@ -10,11 +10,16 @@ import com.uestc.hb.utils.ToolUtil;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.PixelFormat;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -33,6 +38,7 @@ public class ECGActivity extends BaseActivity {
 	private Button normalButton;
 
 	private boolean mIsBind = false;
+	
 
 	private Handler handler = new Handler() {
 
@@ -61,7 +67,7 @@ public class ECGActivity extends BaseActivity {
 				.findViewById(R.id.surfaceview1);
 		nopairButton1 = (Button) noPairView.findViewById(R.id.button1);
 		nopairButton2 = (Button) noPairView.findViewById(R.id.button2);
-		normalButton = (Button) normalButton.findViewById(R.id.button1);
+		normalButton = (Button) normalView.findViewById(R.id.button1);
 	}
 
 	@Override
@@ -142,7 +148,9 @@ public class ECGActivity extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		handleIntent();
+ 		handleIntent();
+ 		normalECGSurfaceView.setZOrderOnTop(true);
+ 		normalECGSurfaceView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
 	}
 
 	@Override
@@ -152,7 +160,30 @@ public class ECGActivity extends BaseActivity {
 			unbindService(serConn);
 		}
 	}
-
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.ecg, menu);
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		int id=item.getItemId();
+		switch (id) {
+		case R.id.menu_alarmlog:
+			ToolUtil.startActivity(this, AlarmLogActivity.class);
+			break;
+		case R.id.menu_about:
+			ToolUtil.startActivity(this, AboutActivity.class);
+			break;
+		case R.id.menu_help:
+			ToolUtil.startActivity(this, WebActivity.creatIntent(this, "http://baidu.com", "帮助"));
+		default:
+			break;
+		}
+		return true;
+	}
 	@Override
 	protected void initValue() {
 

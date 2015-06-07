@@ -4,6 +4,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Set;
 
+<<<<<<< HEAD
+=======
+import com.uestc.hb.R;
+>>>>>>> 86cf7ffa6d2985d649154c7554ec3ef36e0fc357
 import com.uestc.hb.common.BluetoothConst;
 import com.uestc.hb.ui.PairActivity;
 import com.uestc.hb.utils.NotifyUtil;
@@ -22,6 +26,7 @@ import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.Toast;
 
 public class BluetoothService extends Service {
 	private static final String TAG = BluetoothService.class.getName();
@@ -170,19 +175,25 @@ public class BluetoothService extends Service {
 		}
 
 		public void run() {
-			trace("ConnectedThread run");
-			byte[] buffer = new byte[1024]; // buffer store for the stream
-			// Keep listening to the InputStream until an exception occurs
-			while (true) {
+			byte[] buffer = new byte[1024];
 				try {
-					mmInStream.read(buffer);
-					float data = ToolUtil.getFloat(buffer);
-					sendDataMessage(data);
-				} catch (IOException e) {
+					while (mmInStream.read(buffer)!=-1) {
+						float data = ToolUtil.getFloat(buffer);
+						sendDataMessage(data);
+					}
+					mHandler.post(new Runnable() {
+						
+						@Override
+						public void run() {
+							Toast.makeText(BluetoothService.this, "输入流读完了",Toast.LENGTH_SHORT).show();
+						}
+					});
+					Log.i(TAG, "输入流读完了");
 					sendStateMessage(BluetoothConst.MESSAGE_CONNECTED_ERROR);
-					break;
+				} catch (IOException e) {
+					Log.i(TAG, e.toString());
+					sendStateMessage(BluetoothConst.MESSAGE_CONNECTED_ERROR);
 				}
-			}
 		}
 
 		/* Call this from the main activity to shutdown the connection */
