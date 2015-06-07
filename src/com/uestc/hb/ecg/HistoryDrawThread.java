@@ -24,30 +24,28 @@ public class HistoryDrawThread extends Thread {
 
 	private Paint pen;
 
-	private FileRead fileRead;
-	private ArrayList<Float> data;
+	private ArrayList<Float> data = new ArrayList<Float>();
 	private int count;
 
-	public HistoryDrawThread(SurfaceHolder holder, Context context, int width, int height) {
+	public HistoryDrawThread(SurfaceHolder holder, Context context) {
 
-		WIDTH = width;
-		HEIGHT = height;
+		WIDTH = 480;
+		HEIGHT = 270;
 		X_OFFSET = 5;
 
 		xPoint = X_OFFSET;
-		yCenter = HEIGHT / 3 * 2;
+		yCenter = HEIGHT / 4 * 3;
 		
 		yOld = yCenter;
 
 		this.holder = holder;
 
-		holder.setFixedSize((int)(WIDTH * 1.1), (int)(HEIGHT * 1.1));
+		holder.setFixedSize(WIDTH, HEIGHT);
 
 		pen = new Paint();
 		pen.setColor(Color.parseColor("#e91e63"));
 		pen.setStrokeWidth(2);
 		pen.setAntiAlias(true);
-		fileRead = new FileRead(context);
 		data.add((float) 0.0);
 		count = 0;
 	}
