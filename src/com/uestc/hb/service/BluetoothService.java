@@ -31,7 +31,7 @@ public class BluetoothService extends Service {
 	private BluetoothAdapter mBluetoothAdapter;
 	private ConnectThread mConnectThread;
 	private ConnectedThread mConnectedThread;
-
+	private AnalysisThread mAnalysisThread;
 	private static Handler mHandler = null;
 
 	private final IBinder mBinder = new LocalBinder();
@@ -56,12 +56,14 @@ public class BluetoothService extends Service {
 				break;
 			case BluetoothAdapter.ACTION_STATE_CHANGED:
 				int state = intent
-						.getIntExtra(BluetoothAdapter.EXTRA_STATE,-1);
+						.getIntExtra(BluetoothAdapter.EXTRA_STATE, -1);
 				if (BluetoothAdapter.STATE_TURNING_OFF == state) {
-					Intent i = new Intent(BluetoothService.this, PairActivity.class);
+					Intent i = new Intent(BluetoothService.this,
+							PairActivity.class);
 					i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-					NotifyUtil.toNotify(BluetoothService.this, R.drawable.ic_girl,
-							"蓝牙被改变", 1, i, "蓝牙被关闭，HeartBeat无法正常工作");
+					NotifyUtil.toNotify(BluetoothService.this,
+							R.drawable.ic_girl, "蓝牙被改变", 1, i,
+							"蓝牙被关闭，HeartBeat无法正常工作");
 					stop();
 				}
 				break;
@@ -105,14 +107,16 @@ public class BluetoothService extends Service {
 	}
 
 	private synchronized void manageConnectedSocket(BluetoothSocket mmSocket) {
-		trace("设备已连接");
 		mConnectedThread = new ConnectedThread(mmSocket);
 		mConnectedThread.start();
+		mAnalysisThread = new AnalysisThread();
+		mAnalysisThread.start();
 		sendBroadcast(BluetoothConst.ACTION_PAIR_CONNECTED);
 	}
 
 	private class ConnectThread extends Thread {
 		private final BluetoothSocket mmSocket;
+
 		public ConnectThread(BluetoothDevice device) {
 			BluetoothSocket tmp = null;
 			try {
@@ -157,6 +161,7 @@ public class BluetoothService extends Service {
 	private class ConnectedThread extends Thread {
 		private final BluetoothSocket mmSocket;
 		private final InputStream mmInStream;
+
 		public ConnectedThread(BluetoothSocket socket) {
 			mmSocket = socket;
 			InputStream tmpIn = null;
@@ -172,24 +177,25 @@ public class BluetoothService extends Service {
 
 		public void run() {
 			byte[] buffer = new byte[1024];
-				try {
-					while (mmInStream.read(buffer)!=-1) {
-						float data = ToolUtil.getFloat(buffer);
-						sendDataMessage(data);
-					}
-					mHandler.post(new Runnable() {
-						
-						@Override
-						public void run() {
-							Toast.makeText(BluetoothService.this, "输入流读完了",Toast.LENGTH_SHORT).show();
-						}
-					});
-					Log.i(TAG, "输入流读完了");
-					sendStateMessage(BluetoothConst.MESSAGE_CONNECTED_ERROR);
-				} catch (IOException e) {
-					Log.i(TAG, e.toString());
-					sendStateMessage(BluetoothConst.MESSAGE_CONNECTED_ERROR);
+			try {
+				while (mmInStream.read(buffer) != -1) {
+					float data = ToolUtil.getFloat(buffer);
+					sendDataMessage(data);
 				}
+				mHandler.post(new Runnable() {
+
+					@Override
+					public void run() {
+						Toast.makeText(BluetoothService.this, "输入流读完了",
+								Toast.LENGTH_SHORT).show();
+					}
+				});
+				Log.i(TAG, "输入流读完了");
+				sendStateMessage(BluetoothConst.MESSAGE_CONNECTED_ERROR);
+			} catch (IOException e) {
+				Log.i(TAG, e.toString());
+				sendStateMessage(BluetoothConst.MESSAGE_CONNECTED_ERROR);
+			}
 		}
 
 		/* Call this from the main activity to shutdown the connection */
@@ -223,30 +229,28 @@ public class BluetoothService extends Service {
 		if (mHandler != null) {
 			mHandler.obtainMessage(BluetoothConst.MESSAGE_DATA, data)
 					.sendToTarget();
-		} else {
-			trace("handler为空");
 		}
+		mAnalysisThread.handler
+				.obtainMessage(BluetoothConst.MESSAGE_DATA, data)
+				.sendToTarget();
 	}
 
 	private void sendStateMessage(int what) {
 		if (mHandler != null) {
 			mHandler.obtainMessage(what).sendToTarget();
-		} else {
-			trace("handler为空");
 		}
+		mAnalysisThread.handler.obtainMessage(what).sendToTarget();
 	}
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		Log.i(SERVICE, "Service started");
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 		registReceiver();
 	}
 
 	@Override
 	public IBinder onBind(Intent intent) {
-		trace("onBind");
 		sendStateMessage(BluetoothConst.MESSAGE_BIND_SUCCESS);
 		return mBinder;
 	}
@@ -308,4 +312,3 @@ public class BluetoothService extends Service {
 		Log.i(TAG, msg);
 	}
 }
-
