@@ -76,24 +76,25 @@ public class PairActivity extends BaseActivity {
 				openBT();	
 			}
 		});
-		
+
 		pairText3.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(PairActivity.this,ECGActivity.class);
 				startActivity(i);
-				
+
 			}
 		});
-		
+
 		serchButton.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
-				showDevicesList();			}
+				showDevicesList();		
+			}
 		});
-		
+
 	}
 	
 	
@@ -143,14 +144,7 @@ public class PairActivity extends BaseActivity {
          .setContentView(devicesListview);
 		
 		alert.show();
-
 	
-        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-        this.registerReceiver(pairReceiver, filter);
-
-        filter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
-        this.registerReceiver(pairReceiver, filter);
-        
         Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
 
             if (pairedDevices.size() > 0) {
@@ -233,6 +227,8 @@ public class PairActivity extends BaseActivity {
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(BluetoothConst.ACTION_PAIR_CONNECTED);
 		filter.addAction(BluetoothConst.ACTION_PAIR_NOT_FOUND);
+		filter.addAction(BluetoothConst.INTENT_STATE_SUCCESS);
+		filter.addAction(BluetoothConst.INTENT_STATE_FAILED);
 		filter.addAction(BluetoothDevice.ACTION_FOUND);
 		filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
 		registerReceiver(pairReceiver, filter);
@@ -258,12 +254,17 @@ public class PairActivity extends BaseActivity {
             	if (mDevicesArrayAdapter.getCount() == 0) {
             		mDevicesArrayAdapter.add("没有找到设备");
             	}
-            } else{
+            }else if(BluetoothConst.ACTION_PAIR_CONNECTED.equals(action)){ 
+            	trace("连接成功");
+            	startECGActivity(BluetoothConst.INTENT_STATE_SUCCESS);
+            }else{
 				trace("蓝牙状态异常");
 			}			
             }
     }
-    
+//    discover的设备通过对话框显示出来，点击后把device发送给service，service连接失败发送失败的广播给pairactivity，
+//    pairActivity再启动ecgactivity，在intent里面传递失败。service连接成功就发送成功的广播给pairactivity，
+//    pairactivity传递成功的intent并启动ecgActivity
 }
 
 
