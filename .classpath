@@ -3,7 +3,11 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
+<<<<<<< HEAD
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
+=======
+	<classpathentry kind="src" path="/UILibrary"/>
+>>>>>>> 62199143a88fbe1783b30bd15106dcdc0a6bd412
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

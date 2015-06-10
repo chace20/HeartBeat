@@ -49,15 +49,6 @@ public class BluetoothService extends Service {
 				trace("断开连接");
 				stop();
 				break;
-			case BluetoothDevice.ACTION_FOUND:
-				BluetoothDevice device = intent
-						.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-				Log.i(TAG, "deviceName--" + device.getName());
-				if (BluetoothConst.MAC_ADDRESS.equals(device.getAddress())) {
-					trace("连接设备");
-					connectToDevice(device);
-				}
-				break;
 			case BluetoothAdapter.ACTION_STATE_CHANGED:
 				int state = intent
 						.getIntExtra(BluetoothAdapter.EXTRA_STATE, -1);
@@ -70,9 +61,6 @@ public class BluetoothService extends Service {
 							"蓝牙被关闭，HeartBeat无法正常工作");
 					stop();
 				}
-				break;
-			case BluetoothAdapter.ACTION_DISCOVERY_FINISHED:
-				trace("查找结束");
 				break;
 			default:
 				trace("异常");
@@ -216,9 +204,7 @@ public class BluetoothService extends Service {
 		// 取消连接
 		filter.addAction(BluetoothConst.ACTION_SERVICE_CANCEL_CONNECT);
 		// 系统状态
-		filter.addAction(BluetoothDevice.ACTION_FOUND);
 		filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
-		filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
 		trace("注册广播");
 		registerReceiver(serviceReceiver, filter);
 	}
@@ -261,20 +247,9 @@ public class BluetoothService extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		trace("开始discovery");
-		mBluetoothAdapter.startDiscovery();
-		Set<BluetoothDevice> pairedDevices = mBluetoothAdapter
-				.getBondedDevices();
-		// If there are paired devices
-		if (pairedDevices.size() > 0) {
-			// Loop through paired devices
-			for (BluetoothDevice device : pairedDevices) {
-				if (BluetoothConst.MAC_ADDRESS.equals(device.getAddress())) {
-					trace("连接设备");
-					connectToDevice(device);
-				}
-			}
-		}
+		BluetoothDevice device=intent.getParcelableExtra(PairActivity.SELECTED_DEVICE);
+		connectToDevice(device);
+		trace("service开始连接设备-- "+device.getName());
 		return START_STICKY;
 	}
 
@@ -313,6 +288,6 @@ public class BluetoothService extends Service {
 
 	// 用来追踪状态信息
 	public void trace(String msg) {
-		Log.i(TAG, msg);
+		Log.e(TAG, msg);
 	}
 }

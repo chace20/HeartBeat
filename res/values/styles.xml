@@ -17,11 +17,4 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     </style>
 
-    <style name="CustomProgressStyle" parent="@android:style/Widget.ProgressBar.Large">
-        <item name="android:minWidth">72dip</item>
-        <item name="android:maxWidth">72dip</item>
-        <item name="android:minHeight">72dip</item>
-        <item name="android:maxHeight">72dip</item>
-    </style>
-
 </resources>

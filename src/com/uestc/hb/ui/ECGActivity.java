@@ -130,8 +130,8 @@ public class ECGActivity extends BaseActivity {
 	}
 
 	private void retryConnect() {
-		Intent i = new Intent(this, PairActivity.class);
-		startActivity(i);
+		Intent intent = new Intent(this, PairActivity.class);
+		ToolUtil.startActivity(this, intent);
 		finish();
 	}
 
