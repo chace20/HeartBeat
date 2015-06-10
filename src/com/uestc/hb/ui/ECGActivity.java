@@ -23,6 +23,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class ECGActivity extends BaseActivity {
 
@@ -36,9 +37,9 @@ public class ECGActivity extends BaseActivity {
 	private Button nopairButton1;
 	private Button nopairButton2;
 	private Button normalButton;
+	private TextView heartRateText;
 
 	private boolean mIsBind = false;
-	
 
 	private Handler handler = new Handler() {
 
@@ -51,8 +52,16 @@ public class ECGActivity extends BaseActivity {
 			case BluetoothConst.MESSAGE_BIND_SUCCESS:
 				setContentView(normalView);
 				break;
+			case BluetoothConst.MESSAGE_ALARM:
+				//TODO 处理一下异常
+				actionbar.setTitle(msg.obj+"");
+				break;
 			case BluetoothConst.MESSAGE_DATA:
 				normalECGSurfaceView.passData((float) msg.obj);
+				break;
+			case BluetoothConst.MESSAGE_HEART_RATE:
+				heartRateText.setText(msg.arg1+"");
+				break;
 			}
 		};
 	};
@@ -68,6 +77,7 @@ public class ECGActivity extends BaseActivity {
 		nopairButton1 = (Button) noPairView.findViewById(R.id.button1);
 		nopairButton2 = (Button) noPairView.findViewById(R.id.button2);
 		normalButton = (Button) normalView.findViewById(R.id.button1);
+		heartRateText=(TextView) normalView.findViewById(R.id.heartRateText);
 	}
 
 	@Override

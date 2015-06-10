@@ -36,16 +36,21 @@ public class PairActivity extends BaseActivity {
 	public static final String SELECTED_DEVICE = "selected_device";
 
 	private TextView cancelPairText;
+	private TextView titletext;
+	private TextView secondTitleText;
 
 	private BluetoothAdapter mBluetoothAdapter;
 
 	private ArrayAdapter<String> mDevicesArrayAdapter;
 
 	private DeviceReceiver pairReceiver = new DeviceReceiver();
-
+	private MaterialDialog alert;
+	
 	@Override
 	protected void initLayout() {
 		cancelPairText = (TextView) findViewById(R.id.cancelPairText);
+		titletext=(TextView) findViewById(R.id.titleText);
+		secondTitleText=(TextView) findViewById(R.id.secondTitletext);
 		devicesListView = new ListView(this);
 	}
 
@@ -69,6 +74,9 @@ public class PairActivity extends BaseActivity {
 						BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
 							intent.putExtra(SELECTED_DEVICE, device);
 						startService(intent);
+						alert.dismiss();
+						titletext.setText("正在连接");
+						secondTitleText.setText("请稍等片刻");
 					}
 				});
 	}
@@ -121,7 +129,7 @@ public class PairActivity extends BaseActivity {
 	}
 
 	private void showDevicesList() {
-		final MaterialDialog alert = new MaterialDialog(this).setTitle("选择设备")
+		alert = new MaterialDialog(this).setTitle("选择设备")
 				.setContentView(devicesListView);
 		alert.setCanceledOnTouchOutside(true);
 		Set<BluetoothDevice> pairedDevices = mBluetoothAdapter

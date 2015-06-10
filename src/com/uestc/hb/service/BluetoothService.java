@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.Set;
 
 import com.uestc.hb.R;
+import com.uestc.hb.analysis.AnalysisThread;
 import com.uestc.hb.common.BluetoothConst;
 import com.uestc.hb.ui.PairActivity;
 import com.uestc.hb.utils.NotifyUtil;
@@ -53,8 +54,8 @@ public class BluetoothService extends Service {
 							PairActivity.class);
 					i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					NotifyUtil.toNotify(BluetoothService.this,
-							R.drawable.ic_girl, "蓝牙被改变", 1, i,
-							"蓝牙被关闭，HeartBeat无法正常工作");
+							R.drawable.ic_girl, "蓝牙被关闭", 1, i,
+							"蓝牙被关闭，HeartBeat无法正常工作，点击重新打开");
 					stop();
 				}
 				break;
@@ -97,7 +98,7 @@ public class BluetoothService extends Service {
 	private synchronized void manageConnectedSocket(BluetoothSocket mmSocket) {
 		mConnectedThread = new ConnectedThread(mmSocket);
 		mConnectedThread.start();
-		mAnalysisThread = new AnalysisThread();
+		mAnalysisThread = new AnalysisThread(this,mHandler);
 		mAnalysisThread.start();
 		sendBroadcast(BluetoothConst.ACTION_PAIR_CONNECTED);
 	}
@@ -197,9 +198,7 @@ public class BluetoothService extends Service {
 
 	private void registReceiver() {
 		IntentFilter filter = new IntentFilter();
-		// 取消连接
 		filter.addAction(BluetoothConst.ACTION_SERVICE_CANCEL_CONNECT);
-		// 系统状态
 		filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
 		trace("注册广播");
 		registerReceiver(serviceReceiver, filter);
@@ -279,6 +278,9 @@ public class BluetoothService extends Service {
 		public void setHandler(Handler handler) {
 			trace("setHandler");
 			BluetoothService.mHandler = handler;
+			if(mAnalysisThread!=null){
+				mAnalysisThread.setHeartRateHandler(handler);
+			}
 		}
 	}
 
