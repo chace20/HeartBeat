@@ -22,4 +22,8 @@
     <string name="ecg_menu_alarmlog">异常记录</string>
     <string name="ecg_menu_about">关于</string>
     <string name="ecg_menu_help">帮助</string>
+    
+    <string name="about_version">HeartBeat 1.0</string>
+    <string name="about_contact">联系我们</string>
+    <string name="about_copyright">Copyright © 2015 HeartBeat\nAll Rights Reserved</string>
 </resources>
