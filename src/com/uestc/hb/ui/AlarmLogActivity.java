@@ -9,6 +9,7 @@ import me.drakeet.materialdialog.MaterialDialog;
 
 import com.uestc.hb.R;
 import com.uestc.hb.db.DataBaseAdapter;
+import com.uestc.hb.utils.ToolUtil;
 
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -97,7 +98,7 @@ public class AlarmLogActivity extends BaseActivity {
 
 	private void setNoDocView() {
 		TextView textNodoc = (TextView) findViewById(R.id.text_nodoc);
-		textNodoc.setText("您很健康，并没有异常记录");
+		textNodoc.setText("您很健康，没有异常记录");
 	}
 
 	private Handler refreshHandler = new Handler() {
@@ -133,13 +134,12 @@ public class AlarmLogActivity extends BaseActivity {
 		for (int i = cursor.getCount() - 1; i >= 0; i--) {
 			cursor.moveToPosition(i);
 			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("date", lagConverToString(getLag(cursor.getLong(cursor
-					.getColumnIndex("date")))));
+			map.put("date", ToolUtil.getDistanceTime(cursor.getLong(cursor
+					.getColumnIndex("date"))));
 			map.put("heart_rate",
 					cursor.getInt(cursor.getColumnIndex("heart_rate")));
 			docsData.add(map);
 			date.add(cursor.getLong(cursor.getColumnIndex("date")));
-			Log.i("date", ""+cursor.getLong(cursor.getColumnIndex("date")));
 		}
 	}
 
@@ -176,8 +176,9 @@ public class AlarmLogActivity extends BaseActivity {
 
 				final MaterialDialog mMaterialDialog = new MaterialDialog(AlarmLogActivity.this);
 				
-			    mMaterialDialog.setMessage("是否删除？")
-			    .setPositiveButton("确定", new View.OnClickListener() {
+			    mMaterialDialog.setTitle("删除记录")
+			    .setMessage("删除该条记录后，你和医护人员无法对异常做出判断，可能影响你的健康诊断")
+			    .setPositiveButton("删除", new View.OnClickListener() {
 			        @Override
 			        public void onClick(View v) {
 			        	dbAdapter.deleteOneDoc(date.get(position));
@@ -200,39 +201,5 @@ public class AlarmLogActivity extends BaseActivity {
 			}
 		});
 	};
-
-	private String lagConverToString(long lag) {
-		String lag_string = "";
-		if (lag < 60) {
-			lag_string += "刚刚";
-			return lag_string;
-		}
-		if (lag < 60 * 60) {
-			lag_string += "" + (int) (lag / 60) + "分钟前";
-			return lag_string;
-		}
-		if (lag < 60 * 60 * 24) {
-			lag_string += "" + (int) (lag / (60 * 60)) + "小时前";
-			return lag_string;
-		}
-		if (lag < 60 * 60 * 24 * 30) {
-			lag_string += "" + (int) (lag / (60 * 60 * 24)) + "天前";
-			return lag_string;
-		}
-		if (lag < 60 * 60 * 24 * 30 * 12) {
-			lag_string += "" + (int) (lag / (60 * 60 * 24 * 30)) + "个月前";
-			return lag_string;
-		}
-		lag_string += "" + (int) (lag / (60 * 60 * 24 * 30 * 12)) + "年前";
-		return lag_string;
-	}
-
-	private long getLag(long date) {
-		long nowDate = System.currentTimeMillis();
-		long between = 0;
-		between = (nowDate - date) / 1000;
-
-		return between;
-	}
 
 }

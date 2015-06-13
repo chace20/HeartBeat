@@ -1,34 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="56dp"
-    android:gravity="center_vertical"
-    android:orientation="horizontal" >
-
-    <TextView
-        android:layout_width="28dp"
-        android:layout_height="fill_parent" />
-
-    <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:background="@drawable/img_main_heartbroken"
-        android:paddingLeft="28dp" />
+    android:layout_height="72dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp" >
 
     <TextView
         android:id="@+id/text_hr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="14dp"
-        android:text="hr"
-        android:textSize="28sp" />
+        android:layout_centerVertical="true"
+        android:textColor="@color/text_black_87"
+        android:textSize="34sp"
+        android:text="72" />
+    
+    <TextView
+        android:id="@+id/tipText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/text_hr"
+        android:layout_alignBottom="@+id/text_hr"
+        android:layout_marginLeft="5dp"
+        android:textColor="@color/text_black_87"
+        android:textSize="14sp"
+        android:text="每分钟心跳数" />
+    
 
     <TextView
         android:id="@+id/text_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="28dp"
-        android:text="date"
+        android:layout_alignParentRight="true"
+        android:layout_alignBottom="@+id/text_hr"
+        android:text="3小时前"
+        android:textColor="@color/text_black_54"
         android:textSize="14sp" />
 
-</LinearLayout>
+
+
+</RelativeLayout>

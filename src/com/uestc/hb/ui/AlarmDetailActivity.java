@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.uestc.hb.R;
 import com.uestc.hb.db.DataBaseAdapter;
 import com.uestc.hb.ecg.NormalECGSurfaceView;
+import com.uestc.hb.utils.ToolUtil;
 
 public class AlarmDetailActivity extends BaseActivity {
 
@@ -54,7 +55,7 @@ public class AlarmDetailActivity extends BaseActivity {
 		Log.i("doc", "---" + cursorDoc.getCount());
 		Log.i("ill", "---" + cursorIll.getCount());
 		Log.i("date", "---" + bundle.getLong("date"));
-		textDate.setText(praiseDate(bundle.getLong("date")));
+		textDate.setText(ToolUtil.getCommonTimeByStamp(bundle.getLong("date")+""));
 
 		if (cursorDoc.moveToFirst()) {
 			textHeartRate.setText(""
@@ -66,8 +67,7 @@ public class AlarmDetailActivity extends BaseActivity {
 			normalECGSurfaceView.passData(dataGet[i]);
 		}
 
-		textConclusion.setText("您有" + getIllnessName(cursorIll) + "这些病，"
-				+ cursorIll.getString(cursorIll.getColumnIndex("description")));
+		textConclusion.setText("检测到您可能患有" + getIllnessName(cursorIll) + "这些病");
 
 		textAdvice.setText(cursorIll.getString(cursorIll
 				.getColumnIndex("advice")));
@@ -96,14 +96,6 @@ public class AlarmDetailActivity extends BaseActivity {
 			cursor.moveToPosition(i);
 			result += cursor.getString(cursor.getColumnIndex("name")) + " ";
 		}
-		return result;
-	}
-
-	private String praiseDate(long date) {
-		String result = "";
-		Date newDate = new Date(date);
-		simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		result += simpleDateFormat.format(newDate);
 		return result;
 	}
 

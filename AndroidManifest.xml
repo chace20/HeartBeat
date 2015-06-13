@@ -30,7 +30,8 @@
         </activity>
         <activity 
             android:name="com.uestc.hb.ui.WebActivity"
-            android:label="@string/title_web">
+            android:label="@string/title_web"
+            android:screenOrientation="portrait">
         </activity>
         <activity 
             android:name="com.uestc.hb.ui.ECGActivity"
@@ -38,11 +39,13 @@
         </activity>
         <activity 
             android:name="com.uestc.hb.ui.AboutActivity"
-            android:label="@string/title_about">
+            android:label="@string/title_about"
+            android:screenOrientation="portrait">
         </activity>
         <activity 
             android:name="com.uestc.hb.ui.AlarmLogActivity"
-            android:label="@string/title_alarmlog">
+            android:label="@string/title_alarmlog"
+            android:screenOrientation="portrait">
         </activity>
         <activity 
             android:name="com.uestc.hb.ui.AlarmDetailActivity"
