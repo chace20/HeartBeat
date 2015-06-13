@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">HeartBeat</string>
+    
+    <string name="title_pair">配对</string>
+    <string name="title_ecg">HeartBeat</string>
+    <string name="title_about">关于</string>
+    <string name="title_web">网页</string>
+    <string name="title_alarmlog">异常记录</string>
+    <string name="title_alarmdetail">异常详情</string>
+    
+    <string name="web_error">世界上最遥远的距离就是没网，请检查网络连接</string>
+    <!-- ECG -->
+    <string name="nopair_text_tip">还没有连接设备哦</string>
+    <string name="nopair_button_retry">重新连接</string>
+    <string name="nopair_button_help">无法连接？查看帮助</string>
+    <string name="normal_button_disconnect">断开连接</string>
+    <string name="normal_text_number">0</string>
+    <string name="normal_text_unit">每分钟心跳次数</string>
+
+    <string name="ecg_menu_alarmlog">异常记录</string>
+    <string name="ecg_menu_about">关于</string>
+    <string name="ecg_menu_help">帮助</string>
+</resources>

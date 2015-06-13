@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.uestc.hb.PairActivity" >
+
+    <item
+        android:id="@+id/menu_alarmlog"
+        android:title="@string/ecg_menu_alarmlog"
+        android:icon="@drawable/ic_main_alarm"
+        app:showAsAction="always"/>
+    
+    <item
+        android:id="@+id/menu_about"
+        android:title="@string/ecg_menu_about"
+        app:showAsAction="never"/>
+    
+    <item
+        android:id="@+id/menu_help"
+        android:title="@string/ecg_menu_help"
+        app:showAsAction="never"/>
+
+</menu>
