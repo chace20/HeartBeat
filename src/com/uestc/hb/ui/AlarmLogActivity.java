@@ -176,8 +176,10 @@ public class AlarmLogActivity extends BaseActivity {
 
 				final MaterialDialog mMaterialDialog = new MaterialDialog(AlarmLogActivity.this);
 				
-			    mMaterialDialog.setTitle("删除记录")
+			    mMaterialDialog
+			    .setTitle("删除记录")
 			    .setMessage("删除该条记录后，你和医护人员无法对异常做出判断，可能影响你的健康诊断")
+			    .setCanceledOnTouchOutside(true)
 			    .setPositiveButton("删除", new View.OnClickListener() {
 			        @Override
 			        public void onClick(View v) {
@@ -197,7 +199,7 @@ public class AlarmLogActivity extends BaseActivity {
 			        }
 			    }).show();
 
-				return false;
+				return true;
 			}
 		});
 	};

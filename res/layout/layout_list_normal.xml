@@ -12,9 +12,7 @@
         <ListView
             android:id="@+id/list_doc"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:divider="#FFFFFF"
-            android:dividerHeight="1dp" >
+            android:layout_height="wrap_content" >
         </ListView>
     </android.support.v4.widget.SwipeRefreshLayout>
 
