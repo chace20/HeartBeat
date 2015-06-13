@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.uestc.hb.R;
 import com.uestc.hb.common.BluetoothConst;
+import com.uestc.hb.db.DataBaseAdapter;
 import com.uestc.hb.service.BluetoothService;
 import com.uestc.hb.utils.ToolUtil;
 
@@ -46,12 +47,16 @@ public class PairActivity extends BaseActivity {
 	private DeviceReceiver pairReceiver = new DeviceReceiver();
 	private MaterialDialog alert;
 	
+	private DataBaseAdapter dbAdapter;
+	
 	@Override
 	protected void initLayout() {
 		cancelPairText = (TextView) findViewById(R.id.cancelPairText);
 		titletext=(TextView) findViewById(R.id.titleText);
 		secondTitleText=(TextView) findViewById(R.id.secondTitletext);
 		devicesListView = new ListView(this);
+		
+		dbAdapter = new DataBaseAdapter(this);
 	}
 
 	@Override
@@ -91,6 +96,9 @@ public class PairActivity extends BaseActivity {
 		registReceiver();
 
 		openBT();
+		
+		
+		dbAdapter.open();
 	}
 
 	private void openBT() {

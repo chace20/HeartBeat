@@ -8,6 +8,7 @@ import java.util.Queue;
 import com.uestc.hb.R;
 import com.uestc.hb.common.BluetoothConst;
 import com.uestc.hb.common.IllnessType;
+import com.uestc.hb.db.DataBaseAdapter;
 import com.uestc.hb.service.BluetoothService;
 import com.uestc.hb.ui.AlarmLogActivity;
 import com.uestc.hb.ui.PairActivity;
@@ -105,7 +106,8 @@ public class AnalysisThread extends Thread {
 		String dataString = builder.toString().substring(0,
 				builder.length() - 1);
 		// TODO 发送异常记录给存储模块
-		
+		DataBaseAdapter.store(currentTime, dataString, illnessList, rate);
+		Log.i("heart_rate", "---"+illnessList.size());
 		
 		StringBuilder illnessBuilder = new StringBuilder();
 		for (int type : illnessList) {
