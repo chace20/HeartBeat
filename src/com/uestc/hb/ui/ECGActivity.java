@@ -28,6 +28,7 @@ import android.widget.TextView;
 public class ECGActivity extends BaseActivity {
 
 	private static final String TAG = ECGActivity.class.getName();
+	public static final String helpUrl="http://evernever.github.io/heartbeat/help/help.html";
 
 	private View normalView;
 	private View noPairView;
@@ -98,7 +99,7 @@ public class ECGActivity extends BaseActivity {
 			public void onClick(View v) {
 				ToolUtil.startActivity(ECGActivity.this,
 						WebActivity.creatIntent(ECGActivity.this,
-								"http://baidu.com", "帮助"));
+								helpUrl, "帮助"));
 			}
 		});
 		normalButton.setOnClickListener(new OnClickListener() {
@@ -188,7 +189,7 @@ public class ECGActivity extends BaseActivity {
 			ToolUtil.startActivity(this, AboutActivity.class);
 			break;
 		case R.id.menu_help:
-			ToolUtil.startActivity(this, WebActivity.creatIntent(this, "http://baidu.com", "帮助"));
+			ToolUtil.startActivity(this, WebActivity.creatIntent(this, helpUrl, "帮助"));
 		default:
 			break;
 		}
