@@ -43,8 +43,37 @@ public class ToolUtil {
 		String d = format.format(new Date(stampL));
 		return d;
 	}
-
-
+	/**
+	 * 获取时间间隔，超过5天直接显示时间
+	 * @param date
+	 * @return distanceTime
+	 */
+	public static final String getDistanceTime(long date){
+		long nowDate = System.currentTimeMillis();
+		long lag = 0;
+		lag = (nowDate - date) / 1000;
+		
+		String lag_string = "";
+		if (lag < 60) {
+			lag_string += "刚刚";
+			return lag_string;
+		}
+		if (lag < 60 * 60) {
+			lag_string += "" + (int) (lag / 60) + "分钟前";
+			return lag_string;
+		}
+		if (lag < 60 * 60 * 24) {
+			lag_string += "" + (int) (lag / (60 * 60)) + "小时前";
+			return lag_string;
+		}
+		if (lag < 60 * 60 * 24 * 5) {
+			lag_string += "" + (int) (lag / (60 * 60 * 24)) + "天前";
+			return lag_string;
+		}
+		lag_string+=getCommonTimeByStamp(date+"");
+		return lag_string;
+	}
+	
 	public static int getInt(byte[] bytes) {
 		return (0xff & bytes[0]) | (0xff00 & (bytes[1] << 8))
 				| (0xff0000 & (bytes[2] << 16))

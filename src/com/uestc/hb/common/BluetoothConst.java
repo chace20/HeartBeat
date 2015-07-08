@@ -17,6 +17,8 @@ public class BluetoothConst {
 	public static final int MESSAGE_DATA=1;
 	public static final int MESSAGE_CONNECTED_ERROR=2;
 	public static final int MESSAGE_BIND_SUCCESS=3;
+	public static final int MESSAGE_HEART_RATE=4;
+	public static final int MESSAGE_ALARM=5;
 	
 	/*
 	 * broadcast action value

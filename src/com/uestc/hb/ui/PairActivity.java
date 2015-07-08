@@ -1,136 +1,185 @@
 package com.uestc.hb.ui;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
-import com.uestc.hb.R;
-import com.uestc.hb.common.BluetoothConst;
-import com.uestc.hb.service.BluetoothService;
-
-import android.util.Log;
+import me.drakeet.materialdialog.MaterialDialog;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothServerSocket;
-import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Paint;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
-public class PairActivity extends Activity {
+import com.uestc.hb.R;
+import com.uestc.hb.common.BluetoothConst;
+import com.uestc.hb.db.DataBaseAdapter;
+import com.uestc.hb.service.BluetoothService;
+import com.uestc.hb.utils.ToolUtil;
+
+public class PairActivity extends BaseActivity {
 	private static final String TAG = PairActivity.class.getName();
 
 	private static final int REQUEST_ENABLE_BT = 123;
 
-	public BluetoothAdapter mBluetoothAdapter;
+	private ListView devicesListView = null;
 
-	private Button connectButton;
+	public static final String SELECTED_DEVICE = "selected_device";
+
+	private TextView cancelPairText;
+	private TextView titletext;
+	private TextView secondTitleText;
+
+	private BluetoothAdapter mBluetoothAdapter;
+
+	private ArrayAdapter<String> mDevicesArrayAdapter;
+
+	private DeviceReceiver pairReceiver = new DeviceReceiver();
+	private MaterialDialog alert;
 	
-	private BroadcastReceiver pairReceiver = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			String action = intent.getAction();
-			if (BluetoothConst.ACTION_PAIR_CONNECTED.equals(action)) {
-				trace("蓝牙已连接");
-				startECGActivity(BluetoothConst.INTENT_STATE_SUCCESS);
-			}else if(BluetoothConst.ACTION_PAIR_NOT_FOUND.equals(action)){
-				startECGActivity(BluetoothConst.INTENT_STATE_FAILED);
-				trace("蓝牙未找到设备");
-			}else{
-				//更多异常状况
-				trace("蓝牙状态异常");
-			}
-		}
-	};
+	private DataBaseAdapter dbAdapter;
 	
-	private void initView() {
-		connectButton = (Button) findViewById(R.id.connectButton);
-		connectButton.setOnClickListener(new OnClickListener() {
+	@Override
+	protected void initLayout() {
+		cancelPairText = (TextView) findViewById(R.id.cancelPairText);
+		titletext=(TextView) findViewById(R.id.titleText);
+		secondTitleText=(TextView) findViewById(R.id.secondTitletext);
+		devicesListView = new ListView(this);
+		
+		dbAdapter = new DataBaseAdapter(this);
+	}
+
+	@Override
+	protected void initListener() {
+		cancelPairText.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				openBT();
+				startECGActivity(BluetoothConst.INTENT_STATE_FAILED);
 			}
 		});
+		devicesListView.setOnItemClickListener(new OnItemClickListener() {
+					@Override
+					public void onItemClick(AdapterView<?> arg0, View view,
+							int position, long arg3) {						
+						mBluetoothAdapter.cancelDiscovery();
+						String info=mDevicesArrayAdapter.getItem(position);
+						String address = info.substring(info.length() - 17);
+						Intent intent = new Intent(PairActivity.this,BluetoothService.class);
+						BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
+							intent.putExtra(SELECTED_DEVICE, device);
+						startService(intent);
+						alert.dismiss();
+						titletext.setText("正在连接");
+						secondTitleText.setText("请稍等片刻");
+					}
+				});
+	}
+
+	@Override
+	protected void initValue() {
+		cancelPairText.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+		mDevicesArrayAdapter = new ArrayAdapter<String>(this,
+				R.layout.item_pair_dialog);
+		devicesListView.setAdapter(mDevicesArrayAdapter);
+
+		registReceiver();
+
+		openBT();
+		
+		
+		dbAdapter.open();
 	}
 
 	private void openBT() {
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 		if (mBluetoothAdapter == null) {
 			trace("手机没有蓝牙适配器");
-			finish();
+			startECGActivity(BluetoothConst.INTENT_STATE_FAILED);
 		} else {
 			if (!mBluetoothAdapter.isEnabled()) {
 				Intent enableBtIntent = new Intent(
 						BluetoothAdapter.ACTION_REQUEST_ENABLE);
 				startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-			}else{
+			} else {
 				trace("蓝牙已打开");
-				startBTService();
+				doDiscovery();
 			}
 		}
+
 	}
 
-
-	private void registReceiver() {
-		IntentFilter filter = new IntentFilter();
-		filter.addAction(BluetoothConst.ACTION_PAIR_CONNECTED);
-		filter.addAction(BluetoothConst.ACTION_PAIR_NOT_FOUND);
-		registerReceiver(pairReceiver, filter);
-	}
-	
-	private void startBTService(){
-		trace("启动BTService");
-		Intent intent=new Intent(this, BluetoothService.class);
-		startService(intent);
-	}
-	
-	private void startECGActivity(String action){
-		Intent intent=new Intent(this, ECGActivity.class);
+	private void startECGActivity(String action) {
+		Intent intent = new Intent(this, ECGActivity.class);
 		intent.setAction(action);
-		startActivity(intent);
+		ToolUtil.startActivity(this, intent);
 		finish();
 	}
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.layout_pair);
-		initView();
-		registReceiver();
+	private void doDiscovery() {
+
+		if (mBluetoothAdapter.isDiscovering()) {
+			mBluetoothAdapter.cancelDiscovery();
+		}
+
+		mBluetoothAdapter.startDiscovery();
+		showDevicesList();
 	}
+
+	private void showDevicesList() {
+		alert = new MaterialDialog(this).setTitle("选择设备")
+				.setContentView(devicesListView);
+		alert.setCanceledOnTouchOutside(true);
+		Set<BluetoothDevice> pairedDevices = mBluetoothAdapter
+				.getBondedDevices();
+
+		if (pairedDevices.size() > 0) {
+			for (BluetoothDevice device : pairedDevices) {
+				mDevicesArrayAdapter.add(device.getName() + "\n"
+						+ device.getAddress());
+			}
+		}
+		alert.show();
+	}
+
+	@Override
+	protected int setRootView() {
+		return R.layout.layout_pairing;
+	}
+
+	public void trace(String msg) {
+		Log.e(TAG, msg);
+		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+	}
+
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		unregisterReceiver(pairReceiver);
+
+		if (mBluetoothAdapter != null) {
+			mBluetoothAdapter.cancelDiscovery();
+		}
+
+		this.unregisterReceiver(pairReceiver);
 	}
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch (requestCode) {
 		case REQUEST_ENABLE_BT:
 			if (resultCode == Activity.RESULT_OK) {
 				trace("蓝牙打开成功");
-				startBTService();
+				doDiscovery();
 			} else {
 				trace("蓝牙打开失败");
 				startECGActivity(BluetoothConst.INTENT_STATE_FAILED);
@@ -138,10 +187,45 @@ public class PairActivity extends Activity {
 			break;
 		}
 	}
-	
-	//用来追踪状态信息
-	public void trace(String msg){
-		Log.i(TAG, msg);
-		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+
+	private void registReceiver() {
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(BluetoothConst.ACTION_PAIR_CONNECTED);
+		filter.addAction(BluetoothConst.ACTION_PAIR_NOT_FOUND);
+		filter.addAction(BluetoothDevice.ACTION_FOUND);
+		filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+		registerReceiver(pairReceiver, filter);
 	}
+
+	private class DeviceReceiver extends BroadcastReceiver {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			String action = intent.getAction();
+			if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+				trace("查找设备");
+				BluetoothDevice device = intent
+						.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+				mDevicesArrayAdapter.add(device.getName() + "\n"
+							+ device.getAddress());
+			} else if (BluetoothConst.ACTION_PAIR_NOT_FOUND.equals(action)) {
+				trace("连接失败");
+				startECGActivity(BluetoothConst.INTENT_STATE_FAILED);
+			} else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED
+					.equals(action)) {
+				if (mDevicesArrayAdapter.getCount() == 0) {
+					trace("未找到设备");
+					startECGActivity(BluetoothConst.INTENT_STATE_FAILED);
+				}
+			} else if (BluetoothConst.ACTION_PAIR_CONNECTED.equals(action)) {
+				trace("连接成功");
+				startECGActivity(BluetoothConst.INTENT_STATE_SUCCESS);
+			} else {
+				trace("蓝牙状态异常");
+			}
+		}
+	}
+	// discover的设备通过对话框显示出来，点击后把device发送给service，service连接失败发送失败的广播给pairactivity，
+	// pairActivity再启动ecgactivity，在intent里面传递失败。service连接成功就发送成功的广播给pairactivity，
+	// pairactivity传递成功的intent并启动ecgActivity
 }

@@ -23,10 +23,12 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class ECGActivity extends BaseActivity {
 
 	private static final String TAG = ECGActivity.class.getName();
+	public static final String helpUrl="http://evernever.github.io/heartbeat/help/help.html";
 
 	private View normalView;
 	private View noPairView;
@@ -36,9 +38,9 @@ public class ECGActivity extends BaseActivity {
 	private Button nopairButton1;
 	private Button nopairButton2;
 	private Button normalButton;
+	private TextView heartRateText;
 
 	private boolean mIsBind = false;
-	
 
 	private Handler handler = new Handler() {
 
@@ -51,8 +53,16 @@ public class ECGActivity extends BaseActivity {
 			case BluetoothConst.MESSAGE_BIND_SUCCESS:
 				setContentView(normalView);
 				break;
+			case BluetoothConst.MESSAGE_ALARM:
+				//TODO 处理一下异常
+				actionbar.setTitle(msg.obj+"");
+				break;
 			case BluetoothConst.MESSAGE_DATA:
 				normalECGSurfaceView.passData((float) msg.obj);
+				break;
+			case BluetoothConst.MESSAGE_HEART_RATE:
+				heartRateText.setText(msg.arg1+"");
+				break;
 			}
 		};
 	};
@@ -68,6 +78,7 @@ public class ECGActivity extends BaseActivity {
 		nopairButton1 = (Button) noPairView.findViewById(R.id.button1);
 		nopairButton2 = (Button) noPairView.findViewById(R.id.button2);
 		normalButton = (Button) normalView.findViewById(R.id.button1);
+		heartRateText=(TextView) normalView.findViewById(R.id.heartRateText);
 	}
 
 	@Override
@@ -88,7 +99,7 @@ public class ECGActivity extends BaseActivity {
 			public void onClick(View v) {
 				ToolUtil.startActivity(ECGActivity.this,
 						WebActivity.creatIntent(ECGActivity.this,
-								"http://baidu.com", "帮助"));
+								helpUrl, "帮助"));
 			}
 		});
 		normalButton.setOnClickListener(new OnClickListener() {
@@ -130,8 +141,8 @@ public class ECGActivity extends BaseActivity {
 	}
 
 	private void retryConnect() {
-		Intent i = new Intent(this, PairActivity.class);
-		startActivity(i);
+		Intent intent = new Intent(this, PairActivity.class);
+		ToolUtil.startActivity(this, intent);
 		finish();
 	}
 
@@ -178,7 +189,7 @@ public class ECGActivity extends BaseActivity {
 			ToolUtil.startActivity(this, AboutActivity.class);
 			break;
 		case R.id.menu_help:
-			ToolUtil.startActivity(this, WebActivity.creatIntent(this, "http://baidu.com", "帮助"));
+			ToolUtil.startActivity(this, WebActivity.creatIntent(this, helpUrl, "帮助"));
 		default:
 			break;
 		}
