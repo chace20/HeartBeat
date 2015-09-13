@@ -90,7 +90,7 @@ public class PairActivity extends BaseActivity {
 	@Override
 	protected void initValue() {
 		cancelPairText.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
-		mDevicesArrayAdapter = new ArrayAdapter<String>(this,
+		mDevicesArrayAdapter = new ArrayAdapter<>(this,
 				R.layout.item_pair_dialog);
 		devicesListView.setAdapter(mDevicesArrayAdapter);
 

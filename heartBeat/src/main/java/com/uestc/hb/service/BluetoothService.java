@@ -35,6 +35,12 @@ public class BluetoothService extends Service {
 	private AnalysisThread mAnalysisThread;
 	private static Handler mHandler = null;
 
+
+	private byte EE = (byte) 0xEE;
+	private byte FF = (byte) 0xFF;
+	int dataInt;
+	byte[] buffer= new byte[4];
+
 	private final IBinder mBinder = new LocalBinder();
 
 	private BroadcastReceiver serviceReceiver = new BroadcastReceiver() {
@@ -165,26 +171,65 @@ public class BluetoothService extends Service {
 		}
 
 		public void run() {
-			byte[] buffer = new byte[1024];
-			try {
-				while (mmInStream.read(buffer) != -1) {
-					float data = ToolUtil.getFloat(buffer);
-					sendDataMessage(data);
-				}
-				mHandler.post(new Runnable() {
-
-					@Override
-					public void run() {
-						Toast.makeText(BluetoothService.this, "输入流读完了",
-								Toast.LENGTH_SHORT).show();
+				int num;
+				try {
+					while((num=mmInStream.read(buffer, 0, 1))!=-1) {
+						if (num != 1 || buffer[0] != EE) {
+							System.out.println("??????");
+							continue;
+						}
+						// ????????3byte
+						int bytes = 0;
+						while (bytes < 3) {
+							num = mmInStream.read(buffer, bytes + 1, 3 - bytes);//??????????????????
+							if (num == -1) {
+								System.out.println("break");
+								break;
+							} else
+								bytes += num;
+						}
+						if (bytes != 3 || buffer[3] != FF) {
+							System.out.println("??????????????");
+							continue;
+						}
+						dataInt = ((0x0FF & buffer[1]) << 8) + (0x0FF & buffer[2]);
+						float data = (float) (dataInt / 4096.0 * 3.3);
+						sendDataMessage(data);
 					}
-				});
-				Log.i(TAG, "输入流读完了");
-				sendStateMessage(BluetoothConst.MESSAGE_CONNECTED_ERROR);
-			} catch (IOException e) {
-				Log.i(TAG, e.toString());
-				sendStateMessage(BluetoothConst.MESSAGE_CONNECTED_ERROR);
-			}
+					mHandler.post(new Runnable() {
+
+						@Override
+						public void run() {
+							Toast.makeText(BluetoothService.this, "输入流读完了",
+									Toast.LENGTH_SHORT).show();
+						}
+					});
+					sendStateMessage(BluetoothConst.MESSAGE_CONNECTED_ERROR);
+				} catch (IOException e) {
+					sendStateMessage(BluetoothConst.MESSAGE_CONNECTED_ERROR);
+				}
+
+/*原始版本*/
+//			byte[] buffer = new byte[1024];
+//			try {
+//				while (mmInStream.read(buffer) != -1) {
+//					float data = ToolUtil.getFloat(buffer);
+//					sendDataMessage(data);
+//				}
+//				mHandler.post(new Runnable() {
+//
+//					@Override
+//					public void run() {
+//						Toast.makeText(BluetoothService.this, "输入流读完了",
+//								Toast.LENGTH_SHORT).show();
+//					}
+//				});
+//				sendStateMessage(BluetoothConst.MESSAGE_CONNECTED_ERROR);
+//			} catch (IOException e) {
+//				Log.i(TAG, e.toString());
+//				sendStateMessage(BluetoothConst.MESSAGE_CONNECTED_ERROR);
+//			}
+
 		}
 
 		/* Call this from the main activity to shutdown the connection */
