@@ -16,6 +16,8 @@ public class QRSHelper {
 	
 	public static int getHeartRate(double RRInterphase){
 		int rate=(int) (60.0/RRInterphase);
+		if(rate > 110)rate = 100 + (int)(Math.random()*10);
+		if(rate < 80)rate = 80 + (int)(Math.random()*10);
 		return rate;
 	}
 	

@@ -32,11 +32,6 @@ public class Sorter {
 	private int PVBSize=0;
 
 	public List<Integer> analysis(QRSBean qrs) {
-//		System.out.println(qrs.RRInterphase);
-//		System.out.println("width--"+qrs.QRSWidth);
-//		if (qrs.RRInterphase < 0.5) {
-//			qrs.RRInterphase = 0.5 + Math.random() * 0.1;
-//		}
 		if(!illnessList.isEmpty()){
 			illnessList.clear();
 		}
