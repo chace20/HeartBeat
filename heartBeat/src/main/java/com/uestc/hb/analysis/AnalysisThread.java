@@ -1,25 +1,23 @@
 package com.uestc.hb.analysis;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-
-import com.uestc.hb.R;
-import com.uestc.hb.common.BluetoothConst;
-import com.uestc.hb.common.IllnessType;
-import com.uestc.hb.db.DataBaseAdapter;
-import com.uestc.hb.service.BluetoothService;
-import com.uestc.hb.ui.AlarmLogActivity;
-import com.uestc.hb.ui.PairActivity;
-import com.uestc.hb.utils.NotifyUtil;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
+
+import com.uestc.hb.R;
+import com.uestc.hb.common.BluetoothConst;
+import com.uestc.hb.common.IllnessType;
+import com.uestc.hb.db.DataBaseAdapter;
+import com.uestc.hb.ui.AlarmLogActivity;
+import com.uestc.hb.utils.NotifyUtil;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 public class AnalysisThread extends Thread {
 	private static final String TAG = "AnalysisThread";

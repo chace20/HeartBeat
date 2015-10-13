@@ -6,21 +6,39 @@ public class QRSHelper {
 	public static final int LENGTH=360;//每段的长度
 	public static final int DISTANCE=30;//R波左右的区间距离
 	public static final int QUEUE_SIZE=5;//数据数组的队列长度
-	
+
+    /**
+     * 获取QRS波
+     * @param lastRIndex
+     * @param currentRIndex
+     * @param QBeginIndex
+     * @param SEndIndex
+     * @return qrs的bean
+     */
 	public static QRSBean getQRS(int lastRIndex,int currentRIndex,int QBeginIndex,int SEndIndex){
 		QRSBean qrs=new QRSBean();
 		qrs.RRInterphase=(LENGTH-lastRIndex+currentRIndex)/500.0;
 		qrs.QRSWidth=(SEndIndex-QBeginIndex)/500.0;
 		return qrs;
 	}
-	
+
+    /**
+     * 获取RR间期
+     * @param RRInterphase
+     * @return
+     */
 	public static int getHeartRate(double RRInterphase){
 		int rate=(int) (60.0/RRInterphase);
 		if(rate > 110)rate = 100 + (int)(Math.random()*10);
 		if(rate < 80)rate = 80 + (int)(Math.random()*10);
 		return rate;
 	}
-	
+
+    /**
+     * 获取R波的顶点位置
+     * @param list
+     * @return
+     */
 	public static int getRIndex(List<Float> list){
 		float max=0;
 		int RIndex=0;
@@ -32,7 +50,13 @@ public class QRSHelper {
 		}
 		return RIndex;
 	}
-	
+
+	/**
+	 * 获取Q波的开始位置
+	 * @param list
+	 * @param RIndex
+	 * @return
+	 */
 	public static int getQBeginIndex(List<Float> list,int RIndex){
 		float Q=4;
 		int QIndex=0;
@@ -54,7 +78,13 @@ public class QRSHelper {
 		}
 		return QBeginIndex;
 	}
-	
+
+	/**
+	 * 获取S波的结束位置
+	 * @param list
+	 * @param RIndex
+	 * @return
+	 */
 	public static int getSEndIndex(List<Float> list,int RIndex){
 		float S=4;
 		int SIndex=0;
