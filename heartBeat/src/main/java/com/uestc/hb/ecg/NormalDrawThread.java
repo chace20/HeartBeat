@@ -8,6 +8,7 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -64,10 +65,9 @@ public class NormalDrawThread extends Thread {
 
 		pen = new Paint();
 		// pen.setColor(Color.parseColor("#e91e63"));
-		pen.setColor(Color.BLUE);
+		pen.setColor(Color.parseColor("#eeeeee"));
 		pen.setStrokeWidth(2);
 		pen.setAntiAlias(true);
-
 	}
 
 	@Override
@@ -80,25 +80,32 @@ public class NormalDrawThread extends Thread {
 				if (run) {
 					try {
 						yPoint = useData();
+//						yPoint = (float)(Math.random() + 2);
 						yPoint = yCenter - yPoint * 100 + 100;
 					} catch (Exception e) {
 					} finally {
 
 						try {
+							if(xPoint == X_OFFSET){
+								drawBack(holder);
+								drawBack(holder);
+								drawAxises(holder);
+							}
 							Canvas canvas = holder.lockCanvas(new Rect(xPoint,
 									0, xPoint + 7, HEIGHT));
 							canvas.drawLine(xPoint, yOld, xPoint + 1, yPoint,
 									pen);
 							holder.unlockCanvasAndPost(canvas);
+							yOld = yPoint;
+							xPoint += 1;
+							if (xPoint >= WIDTH) {
+								xPoint = X_OFFSET;
+								drawBack(holder);
+								pen.setColor(Color.BLUE);
+							}
 						} catch (Exception e) {
 						}
-						yOld = yPoint;
-						xPoint += 1;
-						if (xPoint >= WIDTH) {
-							xPoint = X_OFFSET;
-							drawBack(holder);
-							drawBack(holder);
-						}
+
 					}
 				}
 			}
@@ -109,20 +116,19 @@ public class NormalDrawThread extends Thread {
 	}
 
 	private void drawBack(SurfaceHolder holder) {
-
 		try {
 			Canvas canvas = holder.lockCanvas();
-			// canvas.drawColor(Color.parseColor("#eeeeee"));
-			// holder.unlockCanvasAndPost(canvas);
+			 canvas.drawColor(Color.parseColor("#eeeeee"));
+			 holder.unlockCanvasAndPost(canvas);
 
-			Paint paint = new Paint();
-			paint.setXfermode(new PorterDuffXfermode(Mode.CLEAR));
-			canvas.drawPaint(paint);
-			paint.setXfermode(new PorterDuffXfermode(Mode.SRC));
+//			Paint paint = new Paint();
+//			paint.setXfermode(new PorterDuffXfermode(Mode.CLEAR));
+//			paint.setXfermode(new PorterDuffXfermode(Mode.SRC));
+//			canvas.drawPaint(paint);
 			holder.unlockCanvasAndPost(canvas);
-			Canvas canvas2 = holder.lockCanvas(new Rect(0, 0, 10, HEIGHT));
-			canvas2.drawColor(Color.parseColor("#eeeeee"));
-			holder.unlockCanvasAndPost(canvas2);
+			Canvas fixCanvas = holder.lockCanvas(new Rect(0, 0, 10, HEIGHT));
+			fixCanvas.drawColor(Color.parseColor("#eeeeee"));
+			holder.unlockCanvasAndPost(fixCanvas);
 		} catch (Exception e) {
 
 		} finally {
@@ -170,5 +176,24 @@ public class NormalDrawThread extends Thread {
 		// lock.unlock();
 		return temp;
 
+	}
+
+	public void drawAxises(SurfaceHolder holder){
+		Bitmap mBitmap = Bitmap.createBitmap(480, 270, Bitmap.Config.ARGB_8888);
+		float x, y;
+		Paint axisPen = new Paint();
+		axisPen.setColor(Color.parseColor("#8b8989"));
+		axisPen.setStrokeWidth(1);
+		Canvas tmp = new Canvas(mBitmap);
+		for(x = X_OFFSET;x <= WIDTH;x += 16){
+			tmp.drawLine(x, 0, x, HEIGHT, axisPen);
+		}
+		for(y = 0;y <= HEIGHT; y += 10){
+			tmp.drawLine(X_OFFSET, y, WIDTH, y, axisPen);
+		}
+		Canvas canvas = holder.lockCanvas();
+		canvas.drawBitmap(mBitmap, 0, 0, axisPen);
+		Log.e("tag", "drawAxises ");
+		holder.unlockCanvasAndPost(canvas);
 	}
 }

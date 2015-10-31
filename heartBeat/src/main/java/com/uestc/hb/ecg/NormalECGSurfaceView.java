@@ -1,5 +1,8 @@
 package com.uestc.hb.ecg;
 
+import android.annotation.TargetApi;
+import android.graphics.Paint;
+import android.os.Build;
 import android.view.SurfaceView;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -7,6 +10,7 @@ import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
+import android.view.View;
 
 public class NormalECGSurfaceView extends SurfaceView implements Callback {
 
@@ -54,6 +58,11 @@ public class NormalECGSurfaceView extends SurfaceView implements Callback {
 		canvas.drawColor(Color.parseColor("#eeeeee"));
 		holder.unlockCanvasAndPost(canvas);
 		normalDrawThread.setRun(true);
+		try {
+			normalDrawThread.sleep(100);
+		} catch (InterruptedException e) {
+
+		}
 	}
 
 	/*
