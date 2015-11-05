@@ -33,6 +33,7 @@ public class NormalDrawThread extends Thread {
 	private int xPoint;
 	private int yCenter;
 	private float yPoint;
+	private float xSpeed;
 
 	private float yOld;
 
@@ -54,6 +55,7 @@ public class NormalDrawThread extends Thread {
 
 		yOld = yCenter;
 		yPoint = yCenter;
+		xSpeed = 20;
 
 		timer = new Timer();
 		task = null;
@@ -97,11 +99,12 @@ public class NormalDrawThread extends Thread {
 									pen);
 							holder.unlockCanvasAndPost(canvas);
 							yOld = yPoint;
-							xPoint += 1;
+							xPoint += xSpeed;
 							if (xPoint >= WIDTH) {
 								xPoint = X_OFFSET;
 								drawBack(holder);
 								pen.setColor(Color.BLUE);
+								xSpeed = 1;
 							}
 						} catch (Exception e) {
 						}
