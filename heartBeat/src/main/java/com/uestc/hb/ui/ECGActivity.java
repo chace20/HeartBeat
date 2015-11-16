@@ -39,6 +39,8 @@ public class ECGActivity extends BaseActivity {
 	private Button nopairButton2;
 	private Button normalButton;
 	private TextView heartRateText;
+	private static final int NORMAL = 1;
+
 
 	private boolean mIsBind = false;
 
@@ -75,6 +77,7 @@ public class ECGActivity extends BaseActivity {
 
 		normalECGSurfaceView = (NormalECGSurfaceView) normalView
 				.findViewById(R.id.surfaceview1);
+		normalECGSurfaceView.passType(NORMAL);
 		nopairButton1 = (Button) noPairView.findViewById(R.id.button1);
 		nopairButton2 = (Button) noPairView.findViewById(R.id.button2);
 		normalButton = (Button) normalView.findViewById(R.id.button1);

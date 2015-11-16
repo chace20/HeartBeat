@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.util.Log;
 import android.view.SurfaceHolder;
 
 public class HistoryDrawThread extends Thread {
@@ -26,6 +27,8 @@ public class HistoryDrawThread extends Thread {
 
 	private ArrayList<Float> data = new ArrayList<Float>();
 	private int count;
+
+	private boolean run;
 
 	public HistoryDrawThread(SurfaceHolder holder, Context context) {
 
@@ -48,29 +51,39 @@ public class HistoryDrawThread extends Thread {
 		pen.setAntiAlias(true);
 		data.add((float) 0.0);
 		count = 0;
+
+		run = false;
 	}
 
 	@Override
 	public void run() {
 
 		float yPoint;
+		Canvas canvas;
 
-		
-		Canvas canvas = holder.lockCanvas(new Rect(0, 0, WIDTH, HEIGHT));
-		canvas.drawColor(Color.parseColor("#00f0f0f0"));
+		while(true){
+			canvas = holder.lockCanvas();
+			if(canvas != null){
+				canvas.drawColor(Color.parseColor("#eeeeee"));
+				break;
+			}
+		}
+
 		while (true) {
-			try {
-				yPoint = (Float) data.get(count++);
-				yPoint = yCenter - yPoint * 50;
-				canvas.drawLine(xPoint - 1, yOld, xPoint, yPoint, pen);
-				yOld = yPoint;
+			if(run){
+				try {
+					yPoint = data.get(count++);
+					yPoint = yCenter - yPoint * 50;
+					canvas.drawLine(xPoint - 1, yOld, xPoint, yPoint, pen);
+					yOld = yPoint;
 
-				xPoint++;
-				if (xPoint >= WIDTH) {
+					xPoint++;
+					if (xPoint >= WIDTH) {
+						return;
+					}
+				} catch (IndexOutOfBoundsException e) {
 					return;
 				}
-			} catch (IndexOutOfBoundsException e) {
-				return;
 			}
 		}
 	}
@@ -78,6 +91,10 @@ public class HistoryDrawThread extends Thread {
 	public void setData(ArrayList<Float> data){
 		
 		this.data = data;
+	}
+
+	public void setRun(boolean run){
+		this.run = run;
 	}
 }
 		

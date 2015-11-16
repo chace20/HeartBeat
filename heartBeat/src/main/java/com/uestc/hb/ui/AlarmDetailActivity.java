@@ -1,6 +1,7 @@
 package com.uestc.hb.ui;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import android.database.Cursor;
@@ -11,6 +12,8 @@ import android.widget.TextView;
 
 import com.uestc.hb.R;
 import com.uestc.hb.db.DataBaseAdapter;
+import com.uestc.hb.ecg.HistoryDrawThread;
+import com.uestc.hb.ecg.HistoryECGSurView;
 import com.uestc.hb.ecg.NormalECGSurfaceView;
 import com.uestc.hb.utils.ToolUtil;
 
@@ -26,6 +29,7 @@ public class AlarmDetailActivity extends BaseActivity {
 	private SimpleDateFormat simpleDateFormat;
 
 	DataBaseAdapter dbAdapter;
+	private static final int HISTORY = 2;
 
 	@Override
 	protected void initLayout() {
@@ -38,7 +42,7 @@ public class AlarmDetailActivity extends BaseActivity {
 		textHeartRate = (TextView) findViewById(R.id.text_heart_rate);
 
 		normalECGSurfaceView = (NormalECGSurfaceView) findViewById(R.id.surfaceview_alarm_detail);
-
+		normalECGSurfaceView.passType(HISTORY);
 	}
 
 	@Override
@@ -66,6 +70,7 @@ public class AlarmDetailActivity extends BaseActivity {
 		for (int i = 0; i < dataGet.length; i++) {
 			normalECGSurfaceView.passData(dataGet[i]);
 		}
+
 
 		textConclusion.setText("检测到您可能患有" + getIllnessName(cursorIll) + "这些病");
 
