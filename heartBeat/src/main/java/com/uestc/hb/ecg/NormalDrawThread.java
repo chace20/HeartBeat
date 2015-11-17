@@ -41,8 +41,13 @@ public class NormalDrawThread extends Thread {
 	private TimerTask task;
 
 	private Paint pen;
+	private static final int NORMAL = 1;
+	private static final int HISTORY = 2;
 
 	private ArrayList<Float> data = new ArrayList<Float>();
+
+
+	private int type;
 
 	public NormalDrawThread(SurfaceHolder holder, Context context) {
 
@@ -56,6 +61,8 @@ public class NormalDrawThread extends Thread {
 		yOld = yCenter;
 		yPoint = yCenter;
 		xSpeed = 20;
+
+		type = NORMAL;
 
 		timer = new Timer();
 		task = null;
@@ -82,8 +89,13 @@ public class NormalDrawThread extends Thread {
 				if (run) {
 					try {
 						yPoint = useData();
+
 //						yPoint = (float)(Math.random() + 2);
-						yPoint = yCenter - yPoint * 100 + 100;
+//						yPoint = yCenter - yPoint * 100 + 100;
+						yPoint = (float) (yCenter - (yPoint - 3.2) * 10000 * 1.5);
+
+
+
 					} catch (Exception e) {
 					} finally {
 
@@ -198,5 +210,9 @@ public class NormalDrawThread extends Thread {
 		canvas.drawBitmap(mBitmap, 0, 0, axisPen);
 		Log.e("tag", "drawAxises ");
 		holder.unlockCanvasAndPost(canvas);
+	}
+
+	public void setType(int type){
+		this.type = type;
 	}
 }

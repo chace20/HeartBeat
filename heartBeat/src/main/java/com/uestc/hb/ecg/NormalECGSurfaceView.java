@@ -78,4 +78,8 @@ public class NormalECGSurfaceView extends SurfaceView implements Callback {
 		normalDrawThread.addData(msg);
 	}
 
+	public void passType(int type){
+		normalDrawThread.setType(type);
+	}
+
 }

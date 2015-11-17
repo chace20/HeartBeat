@@ -2,6 +2,8 @@ package com.uestc.hb.ecg;
 
 import java.util.ArrayList;
 
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.view.SurfaceView;
 import android.content.Context;
 import android.util.AttributeSet;
@@ -19,7 +21,8 @@ public class HistoryECGSurView extends SurfaceView implements Callback {
 		this.context = context;
 		holder = this.getHolder();
 		holder.addCallback(this);
-
+		historyDrawThread = new HistoryDrawThread(holder, context);
+		historyDrawThread.start();
 	}
 
 	/* (non-Javadoc)
@@ -34,8 +37,12 @@ public class HistoryECGSurView extends SurfaceView implements Callback {
 	 */
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
-		historyDrawThread = new HistoryDrawThread(holder, context);
-		historyDrawThread.start();
+
+		Canvas canvas = holder.lockCanvas();
+		canvas.drawColor(Color.parseColor("#eeeeee"));
+		holder.unlockCanvasAndPost(canvas);
+		historyDrawThread.setRun(true);
+
 	}
 
 	/* (non-Javadoc)
