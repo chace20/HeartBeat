@@ -1,25 +1,17 @@
 package com.uestc.hb.ecg;
 
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantLock;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PixelFormat;
-import android.graphics.PorterDuff.Mode;
-import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.SurfaceHolder;
+
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class NormalDrawThread extends Thread {
 
@@ -89,10 +81,11 @@ public class NormalDrawThread extends Thread {
 				if (run) {
 					try {
 						yPoint = useData();
-
+//						Log.e("draw", yPoint + "");
 //						yPoint = (float)(Math.random() + 2);
-//						yPoint = yCenter - yPoint * 100 + 100;
-						yPoint = (float) (yCenter - (yPoint - 3.2) * 10000 * 1.5);
+						yPoint = yCenter - yPoint * 100 + 100;
+						//yPoint = (float) (yCenter - (yPoint - 3.2) * 10000 * 1.5);
+						Log.e("draw", yPoint + "");
 
 
 

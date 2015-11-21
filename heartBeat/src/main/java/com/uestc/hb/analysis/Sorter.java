@@ -1,9 +1,9 @@
 package com.uestc.hb.analysis;
 
+import com.uestc.hb.common.IllnessType;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.uestc.hb.common.IllnessType;
 
 public class Sorter {
 	private double RRAverage = 0;
@@ -63,7 +63,7 @@ public class Sorter {
 			BGSize=3;
 		}else if(qrs.QRSWidth>0.12&&BGSize==3){
 			BGSize=0;//清零
-			illnessList.add(IllnessType.BIGEMINY);
+//			illnessList.add(IllnessType.BIGEMINY);
 		}else{
 			BGSize=0;
 		}
